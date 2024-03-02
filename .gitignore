@@ -7,7 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
+client/node_modules
 dist
 dist-ssr
 *.local
@@ -22,7 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-/.env
-/.vscode/
-/_tmp/
-/package-lock.json
+.env
+.vscode/
+_tmp/
+package-lock.json
