@@ -1,4 +1,4 @@
-import { Waypoint } from './useWaypointsList.ts';
+import { WaypointInterface } from './useWaypointsList.ts';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
@@ -10,15 +10,15 @@ import { ListItemSecondaryAction } from '@mui/material';
 import LatLngUtil from '../../shared/utils/LatLngUtil.ts';
 
 type WaypointsListPropTypes = {
-    items?: Waypoint[];
-    onClick?: (waypoint: Waypoint) => void;
-    onDelete?: (waypoint: Waypoint) => void;
+    items?: WaypointInterface[];
+    onClick?: (waypoint: WaypointInterface) => void;
+    onDelete?: (waypoint: WaypointInterface) => void;
 };
 
 type WaypointListItemPropTypes = {
-    item: Waypoint;
-    onClick?: (waypoint: Waypoint) => void;
-    onDelete?: (waypoint: Waypoint) => void;
+    item: WaypointInterface;
+    onClick?: (waypoint: WaypointInterface) => void;
+    onDelete?: (waypoint: WaypointInterface) => void;
 };
 
 function WaypointListItem({ item, onClick, onDelete }: WaypointListItemPropTypes) {

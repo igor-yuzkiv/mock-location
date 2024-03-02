@@ -1,17 +1,10 @@
 import React from 'react';
 import { uid } from 'uid';
 import { geocodeCoordinate } from '../../shared/api/googleMaps.ts';
-
-export interface Waypoint {
-    id: string;
-    marker: google.maps.Marker,
-    location: google.maps.LatLngLiteral;
-    stopover: boolean;
-    address: string | null;
-}
+import { WaypointInterface } from '../../shared/types/WaypointInterface.ts';
 
 export function useWaypointsList() {
-    const [waypoints, setWaypoints] = React.useState<Waypoint[]>([]);
+    const [waypoints, setWaypoints] = React.useState<WaypointInterface[]>([]);
 
     async function addWaypoint(marker: google.maps.Marker) {
         const location = marker.getPosition()?.toJSON();
@@ -36,7 +29,7 @@ export function useWaypointsList() {
         });
     }
 
-    function removeWaypoint(item: Waypoint) {
+    function removeWaypoint(item: WaypointInterface) {
         if (item.marker) {
             item.marker.setMap(null);
         }

@@ -6,6 +6,8 @@ import { DrawingManager } from '../shared/components/drawing-manager/DrawingMana
 import { Flyout } from '../shared/components/flyout/Flyout.tsx';
 import { WaypointsList } from '../features/waypoints-list/WaypointsList.tsx';
 import { useWaypointsList } from '../features/waypoints-list/useWaypointsList.ts';
+import { Button } from '@mui/material';
+import { useRouteBuilder } from '../features/route-builder/useRouteBuilder.ts';
 
 export default function HomePage() {
     const [mapOptions] = React.useState<google.maps.MapOptions>({
@@ -14,20 +16,32 @@ export default function HomePage() {
         tilt: 0,
     });
 
+    const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
+
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
+    const { buildRoute } = useRouteBuilder();
 
     function onDrawMangerMarkerComplete(marker: google.maps.Marker) {
         marker && addWaypoint(marker);
     }
 
+    function onClickCalculateRoute() {
+        buildRoute(waypoints, mapObject);
+    }
+
     return (
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
-                <MapView mapOptions={mapOptions}>
+                <MapView mapOptions={mapOptions} onMapReady={map => setMapObject(map)}>
                     <DrawingManager onMarkerComplete={onDrawMangerMarkerComplete} />
                 </MapView>
                 <Flyout title={'Waypoints'}>
-                    <WaypointsList items={waypoints} onDelete={removeWaypoint}/>
+                    <div>
+                        <Button onClick={onClickCalculateRoute}>
+                            Calculate Route
+                        </Button>
+                    </div>
+                    <WaypointsList items={waypoints} onDelete={removeWaypoint} />
                 </Flyout>
             </div>
         </Wrapper>

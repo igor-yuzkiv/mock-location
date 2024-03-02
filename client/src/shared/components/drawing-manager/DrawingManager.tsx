@@ -23,7 +23,6 @@ export function DrawingManager({ onMarkerComplete }: DrawingManagerPropType) {
             });
 
             if (onMarkerComplete) {
-                console.log('registering markercomplete event');
                 manager.addListener('markercomplete', onMarkerComplete);
             }
 
