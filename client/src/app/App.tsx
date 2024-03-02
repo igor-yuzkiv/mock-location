@@ -1,20 +1,28 @@
 import './App.css';
 import React from 'react';
-import HomePage from '../pages/home';
+import HomePage from '../pages';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function App() {
+    const darkTheme = createTheme({
+        palette: {
+            mode: 'dark',
+        },
+    });
+
     React.useEffect(() => {
         if (navigator.geolocation) {
-            //TODO: install store
             navigator.geolocation.getCurrentPosition((position) => {
                 console.log('position:', position);
             });
         }
     });
     return (
-        <main className="dark flex relative w-full h-screen overflow-hidden text-black dark:text-white">
-            <HomePage />
-        </main>
+        <ThemeProvider theme={darkTheme}>
+            <main className="dark flex relative w-full h-screen overflow-hidden text-black dark:text-white">
+                <HomePage />
+            </main>
+        </ThemeProvider>
     );
 }
 

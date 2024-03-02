@@ -10,12 +10,6 @@ export function DrawingManager({ onMarkerComplete }: DrawingManagerPropType) {
     const [drawingManager, setDrawingManager] = React.useState<google.maps.drawing.DrawingManager | null>(null);
 
     React.useEffect(() => {
-        if (drawingManager && onMarkerComplete) {
-            drawingManager.addListener('markercomplete', onMarkerComplete);
-        }
-    }, [drawingManager, onMarkerComplete]);
-
-    React.useEffect(() => {
         (async () => {
             if (!mapObject || drawingManager) return;
 
@@ -28,6 +22,11 @@ export function DrawingManager({ onMarkerComplete }: DrawingManagerPropType) {
                 },
             });
 
+            if (onMarkerComplete) {
+                console.log('registering markercomplete event');
+                manager.addListener('markercomplete', onMarkerComplete);
+            }
+
             manager.setMap(mapObject);
             setDrawingManager(manager);
         })();
@@ -35,6 +34,7 @@ export function DrawingManager({ onMarkerComplete }: DrawingManagerPropType) {
         return () => {
             drawingManager && drawingManager.setMap(null);
         };
+
     }, []);
 
     return null;

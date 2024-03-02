@@ -90,7 +90,7 @@ export function Flyout({ children, title }: FlyoutProps) {
                     <span className="text-md font-semibold">{title}</span>
                 </div>
 
-                <div className="flex flex-col w-full h-full overflow-y-auto rounded bg-white dark:bg-gray-700">
+                <div className="flex flex-col w-full h-full overflow-y-auto bg-white dark:bg-gray-700">
                     {children}
                 </div>
             </div>

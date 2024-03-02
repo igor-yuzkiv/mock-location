@@ -10,11 +10,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.0",
     "@googlemaps/polyline-codec": "^1.0.28",
     "@googlemaps/react-wrapper": "^1.1.35",
+    "@mui/icons-material": "^5.15.11",
+    "@mui/material": "^5.15.11",
     "geolib": "^3.3.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uid": "^2.0.2"
   },
   "devDependencies": {
     "@types/google.maps": "^3.55.3",
