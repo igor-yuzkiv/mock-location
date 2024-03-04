@@ -9,7 +9,6 @@ import { useWaypointsList } from '../features/waypoints-list/useWaypointsList.ts
 import { Button } from '@mui/material';
 import { useRouteBuilder } from '../features/route-builder/useRouteBuilder.ts';
 import { useRouteEmulator } from '../features/route-emulator/useRouteEmulator.ts';
-import GeoUtil from '../shared/utils/GeoUtil.ts';
 
 export default function HomePage() {
     const [mapOptions] = React.useState<google.maps.MapOptions>({
