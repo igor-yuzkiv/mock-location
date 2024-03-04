@@ -1,13 +1,3 @@
-export async function geocoderInstance(): Promise<google.maps.Geocoder> {
-    const { Geocoder } = await google.maps.importLibrary('geocoding') as google.maps.GeocodingLibrary;
-    return new Geocoder();
-}
-
-export async function directionsServiceInstance(): Promise<google.maps.DirectionsService> {
-    const { DirectionsService } = await google.maps.importLibrary('routes') as google.maps.RoutesLibrary;
-    return new DirectionsService();
-}
-
 export async function geocodeCoordinate(latLng: google.maps.LatLngLiteral): Promise<google.maps.GeocoderResult[] | null> {
     const { Geocoder } = await google.maps.importLibrary('geocoding') as google.maps.GeocodingLibrary;
     const geocoder = new Geocoder();
@@ -62,7 +52,7 @@ export async function renderDirection(directionResult: google.maps.DirectionsRes
         polylineOptions: {
             strokeColor: '#0a66eb',
             strokeOpacity: 0.8,
-            strokeWeight: 5,
+            strokeWeight: 8,
         },
     });
 

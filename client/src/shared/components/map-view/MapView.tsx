@@ -21,7 +21,6 @@ export default function MapView({ children, mapOptions, onMapReady, onMapClick }
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
 
     React.useEffect(() => {
-        console.log('render');
         if (mapElementRef.current) {
             initializeMap(mapElementRef.current, mapOptions ?? {})
                 .then((obj) => {

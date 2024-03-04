@@ -26,7 +26,7 @@ export default function HomePage() {
     }
 
     function onClickCalculateRoute() {
-        buildRoute(waypoints, mapObject);
+        buildRoute([...waypoints], mapObject);
     }
 
     return (
