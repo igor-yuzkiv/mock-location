@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView from '../shared/components/map-view/MapView.tsx';
-import { GOOGLE_MAP_API_KEY, HOME_COORDINATES } from '../shared/constants/GoogleMapTypes.ts';
+import { GOOGLE_MAP_API_KEY, HOME_COORDINATES } from '../shared/constants/GoogleMapConstants.ts';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { DrawingManager } from '../shared/components/drawing-manager/DrawingManager.tsx';
 import { Flyout } from '../shared/components/flyout/Flyout.tsx';
