@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { WaypointInterface } from '../waypoints-list/useWaypointsList.ts';
+import { WaypointInterface } from '../waypoints-list/types.ts';
 import { fetchDirections, renderDirection } from '../../shared/api/googleMaps.ts';
 
 export function useRouteBuilder() {

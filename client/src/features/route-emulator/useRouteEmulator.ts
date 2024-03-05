@@ -1,16 +1,16 @@
 import React from 'react';
 import GeoUtil from '../../shared/utils/GeoUtil.ts';
 import { getGreatCircleBearing } from 'geolib';
-
-interface PathItemInterface {
-    latLng: google.maps.LatLngLiteral;
-    heading: number;
-}
+import { PathItemInterface } from './types.ts';
 
 export function useRouteEmulator() {
     const [routePath, setRoutePath] = React.useState<PathItemInterface[]>([]);
 
     function playRoute(route: google.maps.DirectionsRoute) {
+        prepareRoutePath(route);
+    }
+
+    function prepareRoutePath(route: google.maps.DirectionsRoute) {
         const coordinates = route.legs
             .flatMap((leg) => {
                 return leg.steps.flatMap((step) => step.path.map((latLng) => latLng.toJSON()));
