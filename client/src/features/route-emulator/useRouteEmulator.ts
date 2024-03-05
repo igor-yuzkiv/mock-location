@@ -16,16 +16,15 @@ export function useRouteEmulator() {
                 return leg.steps.flatMap((step) => step.path.map((latLng) => latLng.toJSON()));
             })
             .filter(Boolean);
+        const interpolated = GeoUtil.interpolatePolyline(coordinates, 3);
 
-        const path = GeoUtil.interpolatePolyline(coordinates, 3);
-
-        setRoutePath(path.map((latLng, index) => {
-            const nextLatLng = path[index + 1];
+        const path = interpolated.map((latLng, index) => {
+            const nextLatLng = interpolated[index + 1];
             const heading = nextLatLng ? getGreatCircleBearing(latLng, nextLatLng) : 0;
             return { latLng, heading };
-        }));
-
-        console.log('Route path:', routePath);
+        });
+        console.log(path);
+        setRoutePath(path);
     }
 
     return { playRoute };
