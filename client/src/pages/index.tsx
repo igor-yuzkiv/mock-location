@@ -9,17 +9,21 @@ import { useWaypointsList } from '../features/waypoints-list/useWaypointsList.ts
 import { Button } from '@mui/material';
 import { useRouteBuilder } from '../features/route-builder/useRouteBuilder.ts';
 import { useRouteEmulator } from '../features/route-emulator/useRouteEmulator.ts';
+import { PositionInterface } from '../features/route-emulator/types.ts';
 
 export default function HomePage() {
     const [mapOptions] = React.useState<google.maps.MapOptions>({
-        center: HOME_COORDINATES,
-        zoom: 15,
-        tilt: 0,
+        center: HOME_COORDINATES, zoom: 15, tilt: 0,
     });
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const { buildRoute, directionsResult } = useRouteBuilder();
-    const { playRoute } = useRouteEmulator();
+
+    const onPositionChanged = React.useCallback((position: PositionInterface | null) => {
+        console.log('position', position);
+    }, []);
+
+    const { startRoute } = useRouteEmulator(onPositionChanged);
 
     function onDrawMangerMarkerComplete(marker: google.maps.Marker) {
         marker && addWaypoint(marker);
@@ -29,11 +33,11 @@ export default function HomePage() {
         buildRoute([...waypoints], mapObject);
     }
 
-    function onClickPlay() {
+    function onClickStart() {
         if (!directionsResult) {
             return;
         }
-        playRoute(directionsResult.routes[0]);
+        startRoute(directionsResult.routes[0]);
     }
 
     return (
@@ -48,8 +52,8 @@ export default function HomePage() {
                             Calculate Route
                         </Button>
 
-                        <Button onClick={onClickPlay} variant="outlined">
-                            Play
+                        <Button onClick={onClickStart} variant="outlined">
+                            Start
                         </Button>
                     </div>
                     <WaypointsList items={waypoints} onDelete={removeWaypoint} />
