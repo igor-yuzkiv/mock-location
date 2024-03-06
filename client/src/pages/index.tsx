@@ -13,19 +13,23 @@ import { PositionInterface } from '../features/route-emulator/types.ts';
 import { Marker } from '../shared/components/marker/Marker.tsx';
 
 export default function HomePage() {
-    const [mapOptions] = React.useState<google.maps.MapOptions>({
-        center: HOME_COORDINATES,
-        zoom: 15,
-        tilt: 0,
-    });
+    const [mapOptions] = React.useState<google.maps.MapOptions>({ center: HOME_COORDINATES, zoom: 15 });
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const { buildRoute, directionsResult } = useRouteBuilder();
     const [currentPostion, setCurrentPosition] = React.useState<PositionInterface | null>(null);
-    const onPositionChanged = React.useCallback((position: PositionInterface | null) => {
-        setCurrentPosition(position);
-    }, []);
+    const onPositionChanged = React.useCallback(
+        (position: PositionInterface | null) => {
+            if (!position) return;
 
+            setCurrentPosition(position);
+            mapObject?.panTo(position.latLng);
+            mapObject?.setZoom(30);
+            mapObject?.setTilt(90);
+            mapObject?.setHeading(position.heading || 0);
+        },
+        [mapObject],
+    );
     const { startRoute } = useRouteEmulator(onPositionChanged);
 
     function onDrawMangerMarkerComplete(marker: google.maps.Marker) {
@@ -37,10 +41,9 @@ export default function HomePage() {
     }
 
     function onClickStart() {
-        if (!directionsResult) {
-            return;
+        if (directionsResult) {
+            startRoute(directionsResult.routes[0]);
         }
-        startRoute(directionsResult.routes[0]);
     }
 
     return (
@@ -50,6 +53,7 @@ export default function HomePage() {
                     <DrawingManager onMarkerComplete={onDrawMangerMarkerComplete} />
                     {currentPostion && <Marker position={currentPostion.latLng} />}
                 </MapView>
+
                 <Flyout title={'Waypoints'}>
                     <div className="flex items-center gap-x-2 p-1 border-b border-gray-500">
                         <Button onClick={onClickCalculateRoute} variant="outlined">
