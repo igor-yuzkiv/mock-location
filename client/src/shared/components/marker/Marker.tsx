@@ -6,7 +6,7 @@ type MarkerProps = {
     onDragEnd?: (event: google.maps.MapMouseEvent) => void;
 };
 
-export default function Marker({ position, onDragEnd }: MarkerProps) {
+export function Marker({ position, onDragEnd }: MarkerProps) {
     const { mapObject } = React.useContext(MapViewContext);
     const [markerObject, setMarkerObject] = React.useState<google.maps.marker.AdvancedMarkerElement | null>(null);
 

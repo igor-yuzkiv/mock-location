@@ -10,17 +10,20 @@ import { Button } from '@mui/material';
 import { useRouteBuilder } from '../features/route-builder/useRouteBuilder.ts';
 import { useRouteEmulator } from '../features/route-emulator/useRouteEmulator.ts';
 import { PositionInterface } from '../features/route-emulator/types.ts';
+import { Marker } from '../shared/components/marker/Marker.tsx';
 
 export default function HomePage() {
     const [mapOptions] = React.useState<google.maps.MapOptions>({
-        center: HOME_COORDINATES, zoom: 15, tilt: 0,
+        center: HOME_COORDINATES,
+        zoom: 15,
+        tilt: 0,
     });
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const { buildRoute, directionsResult } = useRouteBuilder();
-
+    const [currentPostion, setCurrentPosition] = React.useState<PositionInterface | null>(null);
     const onPositionChanged = React.useCallback((position: PositionInterface | null) => {
-        console.log('position', position);
+        setCurrentPosition(position);
     }, []);
 
     const { startRoute } = useRouteEmulator(onPositionChanged);
@@ -45,6 +48,7 @@ export default function HomePage() {
             <div className="flex flex-col w-full h-full">
                 <MapView mapOptions={mapOptions} onMapReady={(map) => setMapObject(map)}>
                     <DrawingManager onMarkerComplete={onDrawMangerMarkerComplete} />
+                    {currentPostion && <Marker position={currentPostion.latLng} />}
                 </MapView>
                 <Flyout title={'Waypoints'}>
                     <div className="flex items-center gap-x-2 p-1 border-b border-gray-500">

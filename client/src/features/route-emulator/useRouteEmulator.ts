@@ -4,6 +4,7 @@ import { getGreatCircleBearing } from 'geolib';
 import { PositionInterface, PositionChangedCallback } from './types.ts';
 
 const UPDATE_LOCATION_INTERVAL = 1000;
+const INTERPOLATION_FRACTION = 3;
 
 export function useRouteEmulator(onPositionChanged: PositionChangedCallback | null) {
     const [routePath, setRoutePath] = React.useState<PositionInterface[]>([]);
@@ -21,11 +22,11 @@ export function useRouteEmulator(onPositionChanged: PositionChangedCallback | nu
 
     function prepareRoutePath(route: google.maps.DirectionsRoute) {
         const coordinates = route.legs
-            .flatMap(leg => leg.steps)
-            .flatMap(step => step.path.map((latLng) => latLng.toJSON()))
+            .flatMap((leg) => leg.steps)
+            .flatMap((step) => step.path.map((latLng) => latLng.toJSON()))
             .filter(Boolean);
 
-        const interpolated = GeoUtil.interpolatePolyline(coordinates, 3);
+        const interpolated = GeoUtil.interpolatePolyline(coordinates, INTERPOLATION_FRACTION);
 
         const path = interpolated.map((latLng, index) => {
             const nextLatLng = interpolated[index + 1];
@@ -39,10 +40,7 @@ export function useRouteEmulator(onPositionChanged: PositionChangedCallback | nu
     React.useEffect(() => {
         let intervalId: number | null = null;
         if (isPlaying) {
-            intervalId = setInterval(
-                () => setCurrentIndex(prev => prev + 1),
-                UPDATE_LOCATION_INTERVAL,
-            );
+            intervalId = setInterval(() => setCurrentIndex((prev) => prev + 1), UPDATE_LOCATION_INTERVAL);
         }
 
         return () => {
