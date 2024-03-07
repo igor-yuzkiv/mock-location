@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { WaypointInterface } from '../waypoints-list/types.ts';
-import { fetchDirections, renderDirection } from '../../shared/api/googleMaps.ts';
+import { WaypointInterface } from '../../features/waypoints-list/types.ts';
+import { fetchDirections, renderDirection } from '../api/googleMaps.ts';
 
-export function useRouteBuilder() {
+export function useRouteDirection() {
     const [directionsResult, setDirectionsResult] = React.useState<google.maps.DirectionsResult | null>(null);
     const [directionRenderer, setDirectionRenderer] = React.useState<google.maps.DirectionsRenderer | null>(null);
 
@@ -21,7 +21,7 @@ export function useRouteBuilder() {
         const response = await fetchDirections(
             origin.location,
             destination.location,
-            waypoints.map(waypoint => {
+            waypoints.map((waypoint) => {
                 return {
                     location: waypoint.location,
                     stopover: waypoint.stopover,

@@ -11,6 +11,12 @@ export function useRouteEmulator(onPositionChanged: PositionChangedCallback | nu
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
     const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
 
+    function resetRoute() {
+        setRoutePath([]);
+        setCurrentIndex(0);
+        setIsPlaying(false);
+    }
+
     function startRoute(route: google.maps.DirectionsRoute) {
         if (isPlaying) {
             return;
@@ -54,5 +60,5 @@ export function useRouteEmulator(onPositionChanged: PositionChangedCallback | nu
         }
     }, [currentIndex, onPositionChanged, routePath]);
 
-    return { startRoute, isPlaying, setIsPlaying };
+    return { startRoute, isPlaying, setIsPlaying, resetRoute };
 }
