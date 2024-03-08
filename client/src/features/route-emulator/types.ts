@@ -3,4 +3,3 @@ export interface PositionInterface {
     heading: number;
     expired: boolean,
 }
-export type PositionChangedCallback = (position: PositionInterface | null) => void;
