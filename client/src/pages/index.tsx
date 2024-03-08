@@ -4,8 +4,8 @@ import { GOOGLE_MAP_API_KEY, HOME_COORDINATES } from '../shared/constants/Google
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { DrawingManager } from '../shared/components/drawing-manager/DrawingManager.tsx';
 import { Flyout } from '../shared/components/flyout/Flyout.tsx';
-import { WaypointsList } from '../features/waypoints-list/WaypointsList.tsx';
-import { useWaypointsList } from '../features/waypoints-list/useWaypointsList.ts';
+import { WaypointsList } from '../widgets/waypoints-list/WaypointsList.tsx';
+import { useWaypointsList } from '../widgets/waypoints-list/useWaypointsList.ts';
 import { Button } from '@mui/material';
 import { useRouteDirection } from '../shared/hooks/useRouteDirection.ts';
 import { useRouteEmulator } from '../features/route-emulator/useRouteEmulator.ts';
