@@ -28,7 +28,7 @@ export default function HomePage() {
             .then(() => {
                 if (mapObject) {
                     const bound = GeoUtil.coordinatesToBoundLiteral(waypoints.map((waypoint) => waypoint.location));
-                    mapObject.fitBounds(bound, 100);
+                    mapObject.fitBounds(bound, 200);
                 }
             })
     }
