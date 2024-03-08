@@ -1,6 +1,6 @@
 import React from 'react';
 import MapView from '@/shared/components/map-view/MapView.tsx';
-import { GOOGLE_MAP_API_KEY, HOME_COORDINATES } from '@/shared/constants/GoogleMapConstants.ts';
+import { GOOGLE_MAP_API_KEY } from '@/shared/constants/GoogleMapConstants.ts';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { DrawingManager } from '@/shared/components/drawing-manager/DrawingManager.tsx';
 import { Flyout } from '@/shared/components/flyout/Flyout.tsx';
@@ -42,7 +42,6 @@ function FlyoutActions({ onClickBuild, onClickPlay, onClickReset, isPlaying }: F
 }
 
 export default function HomePage() {
-    const [mapOptions] = React.useState<google.maps.MapOptions>({ center: HOME_COORDINATES, zoom: 15 });
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const routeDirection = useRouteDirection();
@@ -97,7 +96,7 @@ export default function HomePage() {
     return (
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
-                <MapView mapOptions={mapOptions} onMapReady={(map) => setMapObject(map)}>
+                <MapView onMapReady={(map) => setMapObject(map)}>
                     <DrawingManager onMarkerComplete={onDrawMangerMarkerComplete} />
                     {currentPosition && <Marker position={currentPosition.latLng} />}
                 </MapView>
