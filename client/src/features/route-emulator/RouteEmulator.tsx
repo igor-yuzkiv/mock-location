@@ -1,47 +1,18 @@
-import React from 'react';
-import MapView from '@/shared/components/map-view/MapView.tsx';
-import { GOOGLE_MAP_API_KEY } from '@/shared/constants/GoogleMapConstants.ts';
-import { Wrapper } from '@googlemaps/react-wrapper';
-import { DrawingManager } from '@/shared/components/drawing-manager/DrawingManager.tsx';
-import { FlyoutWindow } from '@/shared/components/flyout-window/FlyoutWindow.tsx';
-import { WaypointsList } from '@/widgets/waypoints-list/WaypointsList.tsx';
-import { useWaypointsList } from '@/widgets/waypoints-list/useWaypointsList.ts';
-import { Button } from '@mui/material';
-import { useRouteDirection } from '@/shared/hooks/useRouteDirection.ts';
-import { useRouteEmulator } from '@/features/route-emulator/useRouteEmulator.ts';
-import { PositionInterface } from '@/features/route-emulator/types.ts';
-import { Marker } from '@/shared/components/marker/Marker.tsx';
-import PlayArrow from '@mui/icons-material/PlayArrow';
-import Pause from '@mui/icons-material/Pause';
+import React from "react";
+import {useWaypointsList} from "@/widgets/waypoints-list/useWaypointsList.ts";
+import {useRouteDirection} from "@/shared/hooks/useRouteDirection.ts";
+import {PositionInterface} from "@/features/route-emulator/types.ts";
+import {useRouteEmulator} from "@/features/route-emulator/useRouteEmulator.ts";
+import {Wrapper} from "@googlemaps/react-wrapper";
+import {GOOGLE_MAP_API_KEY} from "@/shared/constants/GoogleMapConstants.ts";
+import MapView from "@/shared/components/map-view/MapView.tsx";
+import {DrawingManager} from "@/shared/components/drawing-manager/DrawingManager.tsx";
+import {Marker} from "@/shared/components/marker/Marker.tsx";
+import {FlyoutWindow} from "@/shared/components/flyout-window/FlyoutWindow.tsx";
+import {WaypointsList} from "@/widgets/waypoints-list/WaypointsList.tsx";
+import {FlyoutActions} from "@/features/route-emulator/components/FlyoutActions.tsx";
 
-type FlyoutActionsProps = {
-    onClickBuild: () => void;
-    onClickReset: () => void;
-    onClickPlay: () => void;
-    isPlaying: boolean;
-};
-
-function FlyoutActions({ onClickBuild, onClickPlay, onClickReset, isPlaying }: FlyoutActionsProps) {
-    return (
-        <div className="flex items-center w-full justify-between">
-            <div className="flex items-center gap-x-1">
-                <Button size="small" onClick={onClickBuild}>
-                    Build
-                </Button>
-                <Button size="small" onClick={onClickReset}>
-                    Rest
-                </Button>
-            </div>
-            <div className="flex items-center gap-x-1">
-                <Button onClick={onClickPlay} size="small">
-                    {isPlaying ? <Pause sx={{ fontSize: 20 }} /> : <PlayArrow sx={{ fontSize: 20 }} />}
-                </Button>
-            </div>
-        </div>
-    );
-}
-
-export default function HomePage() {
+export function RouteEmulator() {
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const routeDirection = useRouteDirection();
