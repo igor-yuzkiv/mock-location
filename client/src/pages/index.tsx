@@ -3,7 +3,7 @@ import MapView from '@/shared/components/map-view/MapView.tsx';
 import { GOOGLE_MAP_API_KEY } from '@/shared/constants/GoogleMapConstants.ts';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { DrawingManager } from '@/shared/components/drawing-manager/DrawingManager.tsx';
-import { Flyout } from '@/shared/components/flyout/Flyout.tsx';
+import { FlyoutWindow } from '@/shared/components/flyout-window/FlyoutWindow.tsx';
 import { WaypointsList } from '@/widgets/waypoints-list/WaypointsList.tsx';
 import { useWaypointsList } from '@/widgets/waypoints-list/useWaypointsList.ts';
 import { Button } from '@mui/material';
@@ -97,7 +97,7 @@ export default function HomePage() {
                     {currentPosition && <Marker position={currentPosition.latLng} />}
                 </MapView>
 
-                <Flyout
+                <FlyoutWindow
                     actions={
                         <FlyoutActions
                             onClickBuild={handleBuildRoute}
@@ -108,7 +108,7 @@ export default function HomePage() {
                     }
                 >
                     <WaypointsList items={waypoints} onDelete={removeWaypoint} />
-                </Flyout>
+                </FlyoutWindow>
             </div>
         </Wrapper>
     );
