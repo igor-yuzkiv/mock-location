@@ -1,5 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+//eslint-disable-next-line
+//@ts-ignore
 import { fileURLToPath, URL } from 'node:url';
 
 // https://vitejs.dev/config/
