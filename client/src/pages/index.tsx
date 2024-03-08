@@ -16,16 +16,20 @@ import Pause from '@mui/icons-material/Pause';
 
 type FlyoutActionsProps = {
     onClickBuild: () => void;
+    onClickReset: () => void;
     onClickPlay: () => void;
     isPlaying: boolean;
 };
 
-function FlyoutActions({ onClickBuild, onClickPlay, isPlaying }: FlyoutActionsProps) {
+function FlyoutActions({ onClickBuild, onClickPlay, onClickReset, isPlaying }: FlyoutActionsProps) {
     return (
         <div className="flex items-center w-full justify-between">
             <div className="flex items-center gap-x-1">
                 <Button size="small" onClick={onClickBuild}>
                     Build
+                </Button>
+                <Button size="small" onClick={onClickReset}>
+                    Rest
                 </Button>
             </div>
             <div className="flex items-center gap-x-1">
@@ -102,6 +106,7 @@ export default function HomePage() {
                     actions={
                         <FlyoutActions
                             onClickBuild={handleBuildRoute}
+                            onClickReset={handleResetRoute}
                             onClickPlay={onClickPlay}
                             isPlaying={routeEmulator.isPlaying}
                         />
