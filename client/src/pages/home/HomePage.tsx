@@ -9,6 +9,7 @@ import {DrawingManager} from "@/shared/components/drawing-manager/DrawingManager
 import {FlyoutWindow} from "@/shared/components/flyout-window/FlyoutWindow.tsx";
 import {WaypointsList} from "@/widgets/waypoints-list/WaypointsList.tsx";
 import {FlyoutActions} from "@/pages/home/components/FlyoutActions.tsx";
+import GeoUtil from "@/shared/utils/GeoUtil.ts";
 
 export default function HomePage() {
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
@@ -23,7 +24,13 @@ export default function HomePage() {
 
     function onClickBuild() {
         handleResetRoute();
-        routeDirection.buildRoute([...waypoints], mapObject);
+        routeDirection.buildRoute([...waypoints], mapObject)
+            .then(() => {
+                if (mapObject) {
+                    const bound = GeoUtil.coordinatesToBoundLiteral(waypoints.map((waypoint) => waypoint.location));
+                    mapObject.fitBounds(bound, 100);
+                }
+            })
     }
 
     function onClickPlay() {
