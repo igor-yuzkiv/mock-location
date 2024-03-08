@@ -10,9 +10,9 @@ import {DrawingManager} from "@/shared/components/drawing-manager/DrawingManager
 import {Marker} from "@/shared/components/marker/Marker.tsx";
 import {FlyoutWindow} from "@/shared/components/flyout-window/FlyoutWindow.tsx";
 import {WaypointsList} from "@/widgets/waypoints-list/WaypointsList.tsx";
-import {FlyoutActions} from "@/features/route-emulator/components/FlyoutActions.tsx";
+import {FlyoutActions} from "@/pages/home/components/FlyoutActions.tsx";
 
-export function RouteEmulator() {
+export default function HomePage() {
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const routeDirection = useRouteDirection();
