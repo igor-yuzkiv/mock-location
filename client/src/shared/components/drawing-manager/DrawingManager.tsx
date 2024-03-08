@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapViewContext } from '../map-view/MapViewContext.ts';
+import { MapViewContext } from '@/shared/components/map-view/MapViewContext.ts';
 
 type DrawingManagerPropType = {
     onMarkerComplete?: (marker: google.maps.Marker) => void;

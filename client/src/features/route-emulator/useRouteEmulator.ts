@@ -1,5 +1,5 @@
 import React from 'react';
-import GeoUtil from '../../shared/utils/GeoUtil.ts';
+import GeoUtil from '@/shared/utils/GeoUtil.ts';
 import { getGreatCircleBearing } from 'geolib';
 import { PositionInterface, PositionChangedCallback } from './types.ts';
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { WaypointInterface } from '../../widgets/waypoints-list/types.ts';
-import { fetchDirections, renderDirection } from '../api/googleMaps.ts';
+import { WaypointInterface } from '@/widgets/waypoints-list/types.ts';
+import { fetchDirections, renderDirection } from '@/shared/api/googleMaps.ts';
 
 export function useRouteDirection() {
     const [directionsResult, setDirectionsResult] = React.useState<google.maps.DirectionsResult | null>(null);

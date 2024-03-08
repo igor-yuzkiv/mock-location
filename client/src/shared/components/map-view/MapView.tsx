@@ -1,5 +1,5 @@
 import React from 'react';
-import { DEFAULT_MAP_OPTIONS } from '../../constants/GoogleMapConstants.ts';
+import { DEFAULT_MAP_OPTIONS } from '@/shared/constants/GoogleMapConstants.ts';
 import { MapViewContext } from './MapViewContext.ts';
 
 async function initializeMap(mapElement: HTMLDivElement, options: google.maps.MapOptions) {
