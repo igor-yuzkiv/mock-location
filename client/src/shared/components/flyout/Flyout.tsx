@@ -1,14 +1,15 @@
 import React from 'react';
 
-const DEFAULT_SIZE = { width: '25vw', height: '50vh' };
+const DEFAULT_SIZE = { width: '30vw', height: '50vh' };
 const FULL_SCREEN_SIZE = { width: '100vw', height: '100vh' };
 
 type FlyoutProps = {
+    actions?: React.ReactNode;
     children?: React.ReactNode;
-    title: string;
+    title?: string;
 };
 
-export function Flyout({ children, title }: FlyoutProps) {
+export function Flyout({ children, title, actions }: FlyoutProps) {
     const containerRef = React.useRef<HTMLDivElement | null>(null);
     const [dragState, setDragState] = React.useState({
         isDragging: false,
@@ -76,25 +77,24 @@ export function Flyout({ children, title }: FlyoutProps) {
     }, []);
 
     return (
-        <div
+        <section
             className="fixed z-10 bottom-2 left-2 bg-white dark:bg-gray-700 rounded-xl shadow-sm overflow-hidden"
             ref={containerRef}
             style={containerSize}
         >
             <div className="flex flex-col w-full h-full overflow-hidden relative">
                 <div
-                    className="flex items-center w-full bg-gray-100 dark:bg-gray-800 py-1 px-2 cursor-grabbing"
+                    className="flex items-center justify-between w-full bg-gray-100 dark:bg-gray-800 py-1 px-2 cursor-grabbing"
                     onMouseDown={onMouseDown}
                     onMouseUp={onMouseUp}
                     onDoubleClick={toggleFullScreen}
                 >
-                    <span className="text-md font-semibold">{title}</span>
+                    {Boolean(title) && <h1 className="text-lg font-bold">{title}</h1>}
+                    {actions}
                 </div>
 
-                <div className="flex flex-col w-full h-full overflow-y-auto bg-white dark:bg-gray-700">
-                    {children}
-                </div>
+                <div className="flex flex-col w-full h-full overflow-y-auto bg-white dark:bg-gray-700">{children}</div>
             </div>
-        </div>
+        </section>
     );
 }

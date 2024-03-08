@@ -13,10 +13,29 @@ import { PositionInterface } from '@/features/route-emulator/types.ts';
 import { Marker } from '@/shared/components/marker/Marker.tsx';
 import PlayArrow from '@mui/icons-material/PlayArrow';
 import Pause from '@mui/icons-material/Pause';
-import NavigateBefore from '@mui/icons-material/NavigateBefore';
-import NavigateNext from '@mui/icons-material/NavigateNext';
 
-const ICONS_SX = { fontSize: 40 };
+type FlyoutActionsProps = {
+    onClickBuild: () => void;
+    onClickPlay: () => void;
+    isPlaying: boolean;
+};
+
+function FlyoutActions({ onClickBuild, onClickPlay, isPlaying }: FlyoutActionsProps) {
+    return (
+        <div className="flex items-center w-full justify-between">
+            <div className="flex items-center gap-x-1">
+                <Button size="small" onClick={onClickBuild}>
+                    Build
+                </Button>
+            </div>
+            <div className="flex items-center gap-x-1">
+                <Button onClick={onClickPlay} size="small">
+                    {isPlaying ? <Pause sx={{ fontSize: 20 }} /> : <PlayArrow sx={{ fontSize: 20 }} />}
+                </Button>
+            </div>
+        </div>
+    );
+}
 
 export default function HomePage() {
     const [mapOptions] = React.useState<google.maps.MapOptions>({ center: HOME_COORDINATES, zoom: 15 });
@@ -42,11 +61,23 @@ export default function HomePage() {
         marker && addWaypoint(marker);
     }
 
-    function onClickCalculateRoute() {
+    function handleResetRoute() {
+        routeEmulator.resetRoute();
+        routeDirection.resetRoute();
+        if (mapObject) {
+            mapObject.setZoom(15);
+            mapObject.setTilt(0);
+            mapObject.setHeading(0);
+        }
+        setCurrentPosition(null);
+    }
+
+    function handleBuildRoute() {
+        handleResetRoute();
         routeDirection.buildRoute([...waypoints], mapObject);
     }
 
-    function onClickStart() {
+    function onClickPlay() {
         if (!routeDirection.directionsResult) {
             return;
         }
@@ -59,17 +90,6 @@ export default function HomePage() {
         routeEmulator.startRoute(routeDirection.directionsResult.routes[0]);
     }
 
-    function onClickReset() {
-        routeEmulator.resetRoute();
-        routeDirection.resetRoute();
-        if (mapObject) {
-            mapObject.setZoom(15);
-            mapObject.setTilt(0);
-            mapObject.setHeading(0);
-        }
-        setCurrentPosition(null);
-    }
-
     return (
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
@@ -78,34 +98,17 @@ export default function HomePage() {
                     {currentPosition && <Marker position={currentPosition.latLng} />}
                 </MapView>
 
-                <Flyout title={'Waypoints'}>
-                    <div className="flex items-center gap-x-2 p-1 border-b border-gray-500">
-                        <Button onClick={onClickCalculateRoute} variant="outlined">
-                            Calculate Route
-                        </Button>
-
-                        <Button onClick={onClickReset} variant="outlined">
-                            Reset Route
-                        </Button>
-                    </div>
+                <Flyout
+                    actions={
+                        <FlyoutActions
+                            onClickBuild={handleBuildRoute}
+                            onClickPlay={onClickPlay}
+                            isPlaying={routeEmulator.isPlaying}
+                        />
+                    }
+                >
                     <WaypointsList items={waypoints} onDelete={removeWaypoint} />
                 </Flyout>
-
-                <div
-                    className="absolute inset-x-0 w-1/5 bottom-0 mx-auto rounded-lg rounded-b-none bg-white dark:bg-gray-700"
-                >
-                    <div className="flex items-center justify-center w-full">
-                        <Button>
-                            <NavigateBefore sx={ICONS_SX} />
-                        </Button>
-                        <Button onClick={onClickStart}>
-                            {routeEmulator.isPlaying ? <Pause sx={ICONS_SX} /> : <PlayArrow sx={ICONS_SX} />}
-                        </Button>
-                        <Button>
-                            <NavigateNext sx={ICONS_SX} />
-                        </Button>
-                    </div>
-                </div>
             </div>
         </Wrapper>
     );
