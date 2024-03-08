@@ -24,6 +24,7 @@ export function Flyout({ children, title }: FlyoutProps) {
     const mouseMoveListenerRef = React.useRef<((e: MouseEvent) => void) | null>(null);
     mouseMoveListenerRef.current = (e: MouseEvent) => {
         if (dragState.isDragging && containerRef.current) {
+            e.preventDefault();
             const { clientX, clientY } = e;
             const newPosition = {
                 x: clientX - dragState.x,
