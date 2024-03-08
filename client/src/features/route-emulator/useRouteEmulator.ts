@@ -1,21 +1,21 @@
 import React from 'react';
 import GeoUtil from '@/shared/utils/GeoUtil.ts';
-import { getGreatCircleBearing } from 'geolib';
-import { PositionInterface, PositionChangedCallback } from './types.ts';
+import {getGreatCircleBearing} from 'geolib';
+import {PositionInterface} from './types.ts';
+import {DEFAULT_MAP_OPTIONS} from '@/shared/constants/GoogleMapConstants.ts';
 
 const UPDATE_LOCATION_INTERVAL = 1000;
 const INTERPOLATION_FRACTION = 3;
+const MAP_ZOOM = 30;
+const MAP_TILT = 90;
 
-export function useRouteEmulator(onPositionChanged: PositionChangedCallback | null) {
+export function useRouteEmulator(mapObject: google.maps.Map | null) {
     const [routePath, setRoutePath] = React.useState<PositionInterface[]>([]);
-    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
     const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
-
-    function resetRoute() {
-        setRoutePath([]);
-        setCurrentIndex(0);
-        setIsPlaying(false);
-    }
+    const [currentIndex, setCurrentIndex] = React.useState<number>(0);
+    const currentPosition = React.useMemo<PositionInterface | null>(() => {
+        return routePath[currentIndex] || null;
+    }, [currentIndex, routePath]);
 
     function startRoute(route: google.maps.DirectionsRoute) {
         if (isPlaying) {
@@ -24,6 +24,17 @@ export function useRouteEmulator(onPositionChanged: PositionChangedCallback | nu
 
         prepareRoutePath(route);
         setIsPlaying(true);
+    }
+
+    function resetRoute() {
+        setRoutePath([]);
+        setCurrentIndex(0);
+        setIsPlaying(false);
+
+        if (mapObject) {
+            mapObject.setZoom(DEFAULT_MAP_OPTIONS.zoom);
+            mapObject.setTilt(DEFAULT_MAP_OPTIONS.tilt);
+        }
     }
 
     function prepareRoutePath(route: google.maps.DirectionsRoute) {
@@ -37,11 +48,26 @@ export function useRouteEmulator(onPositionChanged: PositionChangedCallback | nu
         const path = interpolated.map((latLng, index) => {
             const nextLatLng = interpolated[index + 1];
             const heading = nextLatLng ? getGreatCircleBearing(latLng, nextLatLng) : 0;
-            return { latLng, heading };
+            return {latLng, heading, expired: false};
         });
 
         setRoutePath(path);
     }
+
+    const changePositionHandler = React.useCallback(
+        (index: number) => {
+            if (!isPlaying || !mapObject) return;
+
+            const position = routePath[index];
+            if (position && !position.expired) {
+                mapObject?.panTo(position.latLng);
+                mapObject?.setZoom(MAP_ZOOM);
+                mapObject?.setTilt(MAP_TILT);
+                mapObject?.setHeading(position.heading);
+            }
+        },
+        [isPlaying, routePath, mapObject],
+    );
 
     React.useEffect(() => {
         let intervalId: number | null = null;
@@ -55,10 +81,15 @@ export function useRouteEmulator(onPositionChanged: PositionChangedCallback | nu
     }, [isPlaying]);
 
     React.useEffect(() => {
-        if (typeof onPositionChanged === 'function' && routePath.length) {
-            onPositionChanged(routePath[currentIndex] || null);
-        }
-    }, [currentIndex, onPositionChanged, routePath]);
+        changePositionHandler(currentIndex);
+    }, [currentIndex, changePositionHandler]);
 
-    return { startRoute, isPlaying, setIsPlaying, resetRoute };
+    return {
+        routePath,
+        startRoute,
+        isPlaying,
+        setIsPlaying,
+        resetRoute,
+        currentPosition
+    };
 }

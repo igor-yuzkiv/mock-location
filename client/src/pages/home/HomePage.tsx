@@ -1,7 +1,6 @@
 import React from "react";
 import {useWaypointsList} from "@/widgets/waypoints-list/useWaypointsList.ts";
 import {useRouteDirection} from "@/shared/hooks/useRouteDirection.ts";
-import {PositionInterface} from "@/features/route-emulator/types.ts";
 import {useRouteEmulator} from "@/features/route-emulator/useRouteEmulator.ts";
 import {Wrapper} from "@googlemaps/react-wrapper";
 import {GOOGLE_MAP_API_KEY} from "@/shared/constants/GoogleMapConstants.ts";
@@ -14,35 +13,16 @@ import {FlyoutActions} from "@/pages/home/components/FlyoutActions.tsx";
 
 export default function HomePage() {
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
-    const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
+    const {waypoints, addWaypoint, removeWaypoint} = useWaypointsList();
     const routeDirection = useRouteDirection();
-    const [currentPosition, setCurrentPosition] = React.useState<PositionInterface | null>(null);
-    const onPositionChanged = React.useCallback(
-        (position: PositionInterface | null) => {
-            if (!position) return;
-
-            setCurrentPosition(position);
-            mapObject?.panTo(position.latLng);
-            mapObject?.setZoom(30);
-            mapObject?.setTilt(90);
-            mapObject?.setHeading(position.heading || 0);
-        },
-        [mapObject],
-    );
-    const routeEmulator = useRouteEmulator(onPositionChanged);
+    const routeEmulator = useRouteEmulator(mapObject);
 
     function handleResetRoute() {
         routeEmulator.resetRoute();
         routeDirection.resetRoute();
-        if (mapObject) {
-            mapObject.setZoom(15);
-            mapObject.setTilt(0);
-            mapObject.setHeading(0);
-        }
-        setCurrentPosition(null);
     }
 
-    function handleBuildRoute() {
+    function onClickBuild() {
         handleResetRoute();
         routeDirection.buildRoute([...waypoints], mapObject);
     }
@@ -52,8 +32,8 @@ export default function HomePage() {
             return;
         }
 
-        if (routeEmulator.isPlaying) {
-            routeEmulator.setIsPlaying(false);
+        if (routeEmulator.routePath.length) {
+            routeEmulator.setIsPlaying(prev => !prev);
             return;
         }
 
@@ -64,21 +44,21 @@ export default function HomePage() {
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
                 <MapView onMapReady={(map) => setMapObject(map)}>
-                    <DrawingManager onMarkerComplete={(marker) => marker && addWaypoint(marker)} />
-                    {currentPosition && <Marker position={currentPosition.latLng} />}
+                    <DrawingManager onMarkerComplete={(marker) => marker && addWaypoint(marker)}/>
+                    {routeEmulator.currentPosition && <Marker position={routeEmulator.currentPosition.latLng}/>}
                 </MapView>
 
                 <FlyoutWindow
                     actions={
                         <FlyoutActions
-                            onClickBuild={handleBuildRoute}
+                            onClickBuild={onClickBuild}
                             onClickReset={handleResetRoute}
                             onClickPlay={onClickPlay}
                             isPlaying={routeEmulator.isPlaying}
                         />
                     }
                 >
-                    <WaypointsList items={waypoints} onDelete={removeWaypoint} />
+                    <WaypointsList items={waypoints} onDelete={removeWaypoint}/>
                 </FlyoutWindow>
             </div>
         </Wrapper>
