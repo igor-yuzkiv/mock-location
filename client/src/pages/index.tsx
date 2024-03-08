@@ -60,10 +60,6 @@ export default function HomePage() {
     );
     const routeEmulator = useRouteEmulator(onPositionChanged);
 
-    function onDrawMangerMarkerComplete(marker: google.maps.Marker) {
-        marker && addWaypoint(marker);
-    }
-
     function handleResetRoute() {
         routeEmulator.resetRoute();
         routeDirection.resetRoute();
@@ -97,7 +93,7 @@ export default function HomePage() {
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
                 <MapView onMapReady={(map) => setMapObject(map)}>
-                    <DrawingManager onMarkerComplete={onDrawMangerMarkerComplete} />
+                    <DrawingManager onMarkerComplete={(marker) => marker && addWaypoint(marker)} />
                     {currentPosition && <Marker position={currentPosition.latLng} />}
                 </MapView>
 
