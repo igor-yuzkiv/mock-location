@@ -3,6 +3,7 @@ import GeoUtil from '@/shared/utils/GeoUtil.ts';
 import {getGreatCircleBearing} from 'geolib';
 import {PositionInterface} from './types.ts';
 import {DEFAULT_MAP_OPTIONS} from '@/shared/constants/GoogleMapConstants.ts';
+import {useCurrentPositionMarker} from "@/features/route-emulator/useCurrentPositionMarker.ts";
 
 const UPDATE_LOCATION_INTERVAL = 1000;
 const INTERPOLATION_FRACTION = 3;
@@ -25,6 +26,8 @@ export function useRouteEmulator(mapObject: google.maps.Map | null) {
         prepareRoutePath(route);
         setIsPlaying(true);
     }
+
+    useCurrentPositionMarker(currentPosition, mapObject)
 
     function resetRoute() {
         setRoutePath([]);

@@ -6,7 +6,6 @@ import {Wrapper} from "@googlemaps/react-wrapper";
 import {GOOGLE_MAP_API_KEY} from "@/shared/constants/GoogleMapConstants.ts";
 import MapView from "@/shared/components/map-view/MapView.tsx";
 import {DrawingManager} from "@/shared/components/drawing-manager/DrawingManager.tsx";
-import {Marker} from "@/shared/components/marker/Marker.tsx";
 import {FlyoutWindow} from "@/shared/components/flyout-window/FlyoutWindow.tsx";
 import {WaypointsList} from "@/widgets/waypoints-list/WaypointsList.tsx";
 import {FlyoutActions} from "@/pages/home/components/FlyoutActions.tsx";
@@ -45,7 +44,6 @@ export default function HomePage() {
             <div className="flex flex-col w-full h-full">
                 <MapView onMapReady={(map) => setMapObject(map)}>
                     <DrawingManager onMarkerComplete={(marker) => marker && addWaypoint(marker)}/>
-                    {routeEmulator.currentPosition && <Marker position={routeEmulator.currentPosition.latLng}/>}
                 </MapView>
 
                 <FlyoutWindow
