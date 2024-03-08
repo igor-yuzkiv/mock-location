@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import AdvancedMarkerElement = google.maps.marker.AdvancedMarkerElement;
 
 async function initMarker(position: PositionInterface, mapObject: google.maps.Map): Promise<AdvancedMarkerElement> {
-    console.log("initMarker");
     const {AdvancedMarkerElement} = (await google.maps.importLibrary(
         'marker',
     )) as google.maps.MarkerLibrary;
