@@ -11,7 +11,7 @@ import { WaypointsList } from '@/widgets/waypoints-list';
 import { FlyoutActions } from '@/pages/home/components/FlyoutActions.tsx';
 import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { Tab, Tabs } from '@mui/material';
-import { RouteEmulatorSettings } from '@/features/route-emulator/ui/RouteEmulatorSettings.tsx';
+import { RouteEmulatorSettings } from '@/features/route-emulator';
 import { useRouteEmulatorSettings } from '@/features/route-emulator/lib/useRouteEmulatorSettings.ts';
 import { Title } from '@/shared/components/typography/Title.tsx';
 

@@ -1,3 +1,6 @@
+
+export { RouteEmulatorSettings } from './ui/RouteEmulatorSettings.tsx';
+
 export interface PositionInterface {
     latLng: google.maps.LatLngLiteral;
     heading: number;
