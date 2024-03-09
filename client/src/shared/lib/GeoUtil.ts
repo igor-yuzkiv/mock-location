@@ -35,14 +35,14 @@ export default {
 
     interpolatePoints(p1: google.maps.LatLngLiteral, p2: google.maps.LatLngLiteral, fraction: number = 10) {
         const distance = GeoLib.getDistance(p1, p2);
-        const numberOfSteps = Math.floor(distance / fraction);
+        if (distance <= fraction) return [];
 
-        if (numberOfSteps < 1) {
-            return [];
-        }
+        const numberOfSteps = Math.floor(distance / fraction);
+        if (numberOfSteps <= 1) return [];
 
         const bearing = GeoLib.getGreatCircleBearing(p1, p2);
         const result = [p1];
+
         for (let i = 0; i < numberOfSteps; i++) {
             const point = this.toCoordinate(
                 GeoLib.computeDestinationPoint(
@@ -50,6 +50,7 @@ export default {
                     fraction,
                     bearing,
                 ));
+
             point && result.push(point);
         }
 
@@ -86,5 +87,5 @@ export default {
             south: bounds.minLat,
             west: bounds.minLng,
         };
-    }
+    },
 };

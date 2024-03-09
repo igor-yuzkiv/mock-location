@@ -3,3 +3,9 @@ export interface PositionInterface {
     heading: number;
     expired: boolean,
 }
+
+export interface EmulatorOptionsInterface {
+    speed: number; // in m/s
+    tilt: number;
+    zoom: number;
+}
