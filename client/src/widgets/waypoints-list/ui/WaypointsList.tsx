@@ -7,7 +7,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ListItemSecondaryAction } from '@mui/material';
 import LatLngUtil from '@/shared/utils/GeoUtil.ts';
-import { WaypointInterface } from './types.ts';
+import { WaypointInterface } from '@/widgets/waypoints-list';
 
 type WaypointsListPropTypes = {
     items?: WaypointInterface[];

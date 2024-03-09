@@ -1,13 +1,13 @@
 import React from "react";
-import {useWaypointsList} from "@/widgets/waypoints-list/useWaypointsList.ts";
-import {useRouteDirection} from "@/shared/hooks/useRouteDirection.ts";
-import {useRouteEmulator} from "@/features/route-emulator/useRouteEmulator.ts";
+import {useWaypointsList} from "@/widgets/waypoints-list/lib/useWaypointsList.ts";
+import {useRouteDirection} from "@/features/route-builder/lib/useRouteDirection.ts";
+import {useRouteEmulator} from "@/features/route-emulator/lib/useRouteEmulator.ts";
 import {Wrapper} from "@googlemaps/react-wrapper";
 import {GOOGLE_MAP_API_KEY} from "@/shared/constants/GoogleMapConstants.ts";
 import MapView from "@/shared/components/map-view/MapView.tsx";
 import {DrawingManager} from "@/shared/components/drawing-manager/DrawingManager.tsx";
 import {FlyoutWindow} from "@/shared/components/flyout-window/FlyoutWindow.tsx";
-import {WaypointsList} from "@/widgets/waypoints-list/WaypointsList.tsx";
+import {WaypointsList} from "@/widgets/waypoints-list";
 import {FlyoutActions} from "@/pages/home/components/FlyoutActions.tsx";
 import GeoUtil from "@/shared/utils/GeoUtil.ts";
 

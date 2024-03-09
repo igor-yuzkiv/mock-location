@@ -1,9 +1,9 @@
 import React from 'react';
 import GeoUtil from '@/shared/utils/GeoUtil.ts';
 import {getGreatCircleBearing} from 'geolib';
-import {PositionInterface} from './types.ts';
+import {PositionInterface} from '@/features/route-emulator';
 import {DEFAULT_MAP_OPTIONS} from '@/shared/constants/GoogleMapConstants.ts';
-import {useCurrentPositionMarker} from "@/features/route-emulator/useCurrentPositionMarker.ts";
+import {useCurrentPositionMarker} from "@/features/route-emulator/lib/useCurrentPositionMarker.ts";
 
 const UPDATE_LOCATION_INTERVAL = 1000;
 const INTERPOLATION_FRACTION = 3;

@@ -1,4 +1,4 @@
-import {PositionInterface} from "@/features/route-emulator/types.ts";
+import {PositionInterface} from "@/features/route-emulator";
 import {useEffect, useState} from "react";
 
 import AdvancedMarkerElement = google.maps.marker.AdvancedMarkerElement;

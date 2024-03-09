@@ -1,7 +1,7 @@
 import React from 'react';
 import { uid } from 'uid';
 import { geocodeCoordinate } from '@/shared/api/googleMaps.ts';
-import { WaypointInterface } from '@/widgets/waypoints-list/types.ts';
+import { WaypointInterface } from '@/widgets/waypoints-list';
 
 export function useWaypointsList() {
     const [waypoints, setWaypoints] = React.useState<WaypointInterface[]>([]);
