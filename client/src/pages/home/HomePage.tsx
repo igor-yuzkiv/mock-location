@@ -1,21 +1,28 @@
-import React from "react";
-import {useWaypointsList} from "@/widgets/waypoints-list/lib/useWaypointsList.ts";
-import {useRouteDirection} from "@/features/route-builder/lib/useRouteDirection.ts";
-import {useRouteEmulator} from "@/features/route-emulator/lib/useRouteEmulator.ts";
-import {Wrapper} from "@googlemaps/react-wrapper";
-import {GOOGLE_MAP_API_KEY} from "@/shared/constants/GoogleMapConstants.ts";
-import MapView from "@/shared/components/map-view/MapView.tsx";
-import {DrawingManager} from "@/shared/components/drawing-manager/DrawingManager.tsx";
-import {FlyoutWindow} from "@/shared/components/flyout-window/FlyoutWindow.tsx";
-import {WaypointsList} from "@/widgets/waypoints-list";
-import {FlyoutActions} from "@/pages/home/components/FlyoutActions.tsx";
-import GeoUtil from "@/shared/lib/GeoUtil.ts";
+import React from 'react';
+import { useWaypointsList } from '@/widgets/waypoints-list/lib/useWaypointsList.ts';
+import { useRouteDirection } from '@/features/route-builder/lib/useRouteDirection.ts';
+import { useRouteEmulator } from '@/features/route-emulator/lib/useRouteEmulator.ts';
+import { Wrapper } from '@googlemaps/react-wrapper';
+import { GOOGLE_MAP_API_KEY } from '@/shared/constants/GoogleMapConstants.ts';
+import MapView from '@/shared/components/map-view/MapView.tsx';
+import { DrawingManager } from '@/shared/components/drawing-manager/DrawingManager.tsx';
+import { FlyoutWindow } from '@/shared/components/flyout-window/FlyoutWindow.tsx';
+import { WaypointsList } from '@/widgets/waypoints-list';
+import { FlyoutActions } from '@/pages/home/components/FlyoutActions.tsx';
+import GeoUtil from '@/shared/lib/GeoUtil.ts';
+import { Tab, Tabs } from '@mui/material';
+import { RouteEmulatorSettings } from '@/features/route-emulator/ui/RouteEmulatorSettings.tsx';
+import { useRouteEmulatorSettings } from '@/features/route-emulator/lib/useRouteEmulatorSettings.ts';
+import { Title } from '@/shared/components/typography/Title.tsx';
+
 
 export default function HomePage() {
+    const [tabIndex, setTabIndex] = React.useState(0);
+    const emulatorSettings = useRouteEmulatorSettings();
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
-    const {waypoints, addWaypoint, removeWaypoint} = useWaypointsList();
+    const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const routeDirection = useRouteDirection();
-    const routeEmulator = useRouteEmulator(mapObject);
+    const routeEmulator = useRouteEmulator(mapObject, emulatorSettings.settings);
 
     function handleResetRoute() {
         routeEmulator.resetRoute();
@@ -30,7 +37,7 @@ export default function HomePage() {
                     const bound = GeoUtil.coordinatesToBoundLiteral(waypoints.map((waypoint) => waypoint.location));
                     mapObject.fitBounds(bound, 200);
                 }
-            })
+            });
     }
 
     function onClickPlay() {
@@ -50,7 +57,7 @@ export default function HomePage() {
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
                 <MapView onMapReady={(map) => setMapObject(map)}>
-                    <DrawingManager onMarkerComplete={(marker) => marker && addWaypoint(marker)}/>
+                    <DrawingManager onMarkerComplete={(marker) => marker && addWaypoint(marker)} />
                 </MapView>
 
                 <FlyoutWindow
@@ -63,7 +70,20 @@ export default function HomePage() {
                         />
                     }
                 >
-                    <WaypointsList items={waypoints} onDelete={removeWaypoint}/>
+                    <Tabs value={tabIndex}>
+                        <Tab label="Waypoints" onClick={() => setTabIndex(0)} />
+                        <Tab label="Settings" onClick={() => setTabIndex(1)} />
+                    </Tabs>
+
+                    {tabIndex === 0 && (<WaypointsList items={waypoints} onDelete={removeWaypoint} />)}
+
+                    {tabIndex === 1 && (<div className="flex flex-col overflow-y-auto p-1">
+                        <Title text="Route Emulator Settings" />
+                        <RouteEmulatorSettings
+                            model={emulatorSettings.settings}
+                            onChange={emulatorSettings.setSettings}
+                        />
+                    </div>)}
                 </FlyoutWindow>
             </div>
         </Wrapper>

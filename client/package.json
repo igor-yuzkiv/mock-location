@@ -15,7 +15,7 @@
     "@googlemaps/polyline-codec": "^1.0.28",
     "@googlemaps/react-wrapper": "^1.1.35",
     "@mui/icons-material": "^5.15.11",
-    "@mui/material": "^5.15.11",
+    "@mui/material": "^5.15.12",
     "geolib": "^3.3.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
