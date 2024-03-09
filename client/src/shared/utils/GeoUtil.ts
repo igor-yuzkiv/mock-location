@@ -77,4 +77,14 @@ export default {
         }
         return points;
     },
+
+    coordinatesToBoundLiteral(coordinates: google.maps.LatLngLiteral[]): google.maps.LatLngBoundsLiteral {
+        const bounds = GeoLib.getBounds(coordinates);
+        return {
+            east: bounds.maxLng,
+            north: bounds.maxLat,
+            south: bounds.minLat,
+            west: bounds.minLng,
+        };
+    }
 };

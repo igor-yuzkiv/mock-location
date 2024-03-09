@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import HomePage from '@/pages';
+import HomePage from '@/pages/home/HomePage.tsx';
 
 function App() {
     const darkTheme = createTheme({

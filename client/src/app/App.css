@@ -1,0 +1,23 @@
+.current-position-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.current-position-marker:after {
+    content: "\27A4";
+    rotate: 270deg;
+    background: rgba(50, 180, 14, 0.73);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+}

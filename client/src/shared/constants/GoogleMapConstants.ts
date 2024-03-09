@@ -13,7 +13,7 @@ export const MAP_TYPES = {
     TERRAIN: 'terrain',
 };
 
-export const DEFAULT_MAP_OPTIONS: google.maps.MapOptions = {
+export const DEFAULT_MAP_OPTIONS = {
     center: HOME_COORDINATES,
     zoom: 15,
     mapTypeId: MAP_TYPES.ROADMAP,
