@@ -1,5 +1,5 @@
 import React from 'react';
-import GeoUtil from '@/shared/utils/GeoUtil.ts';
+import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import {getGreatCircleBearing} from 'geolib';
 import {PositionInterface} from '@/features/route-emulator';
 import {DEFAULT_MAP_OPTIONS} from '@/shared/constants/GoogleMapConstants.ts';

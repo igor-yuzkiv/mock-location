@@ -9,7 +9,7 @@ import {DrawingManager} from "@/shared/components/drawing-manager/DrawingManager
 import {FlyoutWindow} from "@/shared/components/flyout-window/FlyoutWindow.tsx";
 import {WaypointsList} from "@/widgets/waypoints-list";
 import {FlyoutActions} from "@/pages/home/components/FlyoutActions.tsx";
-import GeoUtil from "@/shared/utils/GeoUtil.ts";
+import GeoUtil from "@/shared/lib/GeoUtil.ts";
 
 export default function HomePage() {
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
