@@ -77,7 +77,7 @@ export default function HomePage() {
 
                     {tabIndex === 0 && (<WaypointsList items={waypoints} onDelete={removeWaypoint} />)}
 
-                    {tabIndex === 1 && (<div className="flex flex-col overflow-y-auto p-1">
+                    {tabIndex === 1 && (<div className="flex flex-col overflow-y-auto overflow-x-hidden p-1">
                         <Title text="Route Emulator Settings" />
                         <RouteEmulatorSettings
                             model={emulatorSettings.settings}

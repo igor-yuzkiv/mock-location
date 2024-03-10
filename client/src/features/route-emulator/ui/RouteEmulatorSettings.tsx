@@ -18,11 +18,11 @@ export function RouteEmulatorSettings({ model, onChange }: SettingsPropTypes) {
 
     return <section className="flex flex-col px-2">
         <div>
-            <label>Small (m/s)</label>
+            <label>Speed (m/s)</label>
             <Slider
                 defaultValue={3}
                 value={model.speed}
-                aria-label="Small (m/s)"
+                aria-label="Speed (m/s)"
                 valueLabelDisplay="auto"
                 max={50}
                 min={1}
