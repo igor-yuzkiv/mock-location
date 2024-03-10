@@ -15,10 +15,10 @@ export function FlyoutActions({ onClickBuild, onClickPlay, onClickReset, isPlayi
         <div className="flex items-center w-full justify-between">
             <ThemeSwitch/>
             <Stack direction="row">
-                <Button size="small" onClick={onClickBuild}>
+                <Button size="medium" onClick={onClickBuild}>
                     Build
                 </Button>
-                <Button size="small" onClick={onClickReset}>
+                <Button size="medium" onClick={onClickReset}>
                     Rest
                 </Button>
             </Stack>

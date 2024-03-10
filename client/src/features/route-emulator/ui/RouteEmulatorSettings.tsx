@@ -18,8 +18,9 @@ export function RouteEmulatorSettings({ model, onChange }: SettingsPropTypes) {
 
     return <section className="flex flex-col px-2">
         <div>
-            <label>Speed (m/s)</label>
+            <label className="text-gray-600 dark:text-gray-400 text-sm">Speed (m/s)</label>
             <Slider
+                size={'small'}
                 defaultValue={3}
                 value={model.speed}
                 aria-label="Speed (m/s)"
@@ -30,8 +31,9 @@ export function RouteEmulatorSettings({ model, onChange }: SettingsPropTypes) {
             />
         </div>
         <div>
-            <label>Tilt</label>
+            <label className="text-gray-600 dark:text-gray-400 text-sm">Tilt</label>
             <Slider
+                size={'small'}
                 defaultValue={0}
                 value={model.tilt}
                 aria-label="Small"
@@ -42,8 +44,9 @@ export function RouteEmulatorSettings({ model, onChange }: SettingsPropTypes) {
             />
         </div>
         <div>
-            <label>Zoom</label>
+            <label className="text-gray-600 dark:text-gray-400 text-sm">Zoom</label>
             <Slider
+                size={'small'}
                 defaultValue={20}
                 value={model.zoom}
                 aria-label="Small"

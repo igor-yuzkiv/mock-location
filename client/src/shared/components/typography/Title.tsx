@@ -3,5 +3,5 @@ type TitlePropTypes = {
 }
 
 export function Title({text}: TitlePropTypes) {
-    return <h3 className="text-lg font-semibold my-2 dark:text-gray-400">{text}</h3>;
+    return <h3 className="text-lg font-medium my-2 text-gray-700 dark:text-gray-500">{text}</h3>;
 }
