@@ -2,6 +2,7 @@ import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 import { useAppDispatch } from '@/app/store/hooks.ts';
 import { toggleTheme } from '@/features/settings/settings.store';
+import { DARK_THEME } from '@/app/theme.ts';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => {
     return {
@@ -22,12 +23,12 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => {
                 },
                 '& + .MuiSwitch-track': {
                     opacity: 1,
-                    backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+                    backgroundColor: theme.palette.mode === DARK_THEME ? '#8796A5' : '#aab4be',
                 },
             },
         },
         '& .MuiSwitch-thumb': {
-            backgroundColor: theme.palette.mode === 'dark' ? '#003892' : '#001e3c',
+            backgroundColor: theme.palette.mode === DARK_THEME ? '#003892' : '#001e3c',
             width: 32,
             height: 32,
             '&::before': {
@@ -46,7 +47,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => {
         },
         '& .MuiSwitch-track': {
             opacity: 1,
-            backgroundColor: theme.palette.mode === 'dark' ? '#8796A5' : '#aab4be',
+            backgroundColor: theme.palette.mode === DARK_THEME ? '#8796A5' : '#aab4be',
             borderRadius: 20 / 2,
         },
     };

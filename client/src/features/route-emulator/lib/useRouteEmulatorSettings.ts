@@ -5,7 +5,7 @@ export function useRouteEmulatorSettings() {
     const [settings, setSettings] = useState<EmulatorOptionsInterface>({
         speed: 3,
         tilt: 0,
-        zoom: 10,
+        zoom: 19,
     });
 
     return {
