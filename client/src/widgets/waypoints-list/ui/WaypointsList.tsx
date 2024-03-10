@@ -44,11 +44,11 @@ function WaypointListItem({ item, onClick, onDelete }: WaypointListItemPropTypes
 }
 
 export function WaypointsList({ items, onClick, onDelete }: WaypointsListPropTypes) {
-    return (
+    return <div className="flex flex-col overflow-auto p-1">
         <List dense>
             {items?.map((item) => (
                 <WaypointListItem key={item.id} item={item} onClick={onClick} onDelete={onDelete} />
             ))}
         </List>
-    );
+    </div>;
 }
