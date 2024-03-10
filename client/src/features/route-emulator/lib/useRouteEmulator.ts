@@ -61,7 +61,7 @@ export function useRouteEmulator(mapObject: google.maps.Map | null, options?: Em
             if (!isPlaying || !mapObject) return;
 
             const position = routePath[index];
-            if (position && !position.expired) {
+            if (position && !position.expired && options?.follow) {
                 mapObject?.panTo(position.latLng);
                 mapObject?.setZoom(options ? options.zoom : MAP_ZOOM);
                 mapObject?.setTilt(options ? options.tilt : MAP_TILT);

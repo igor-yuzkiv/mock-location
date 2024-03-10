@@ -11,4 +11,5 @@ export interface EmulatorOptionsInterface {
     speed: number; // in m/s
     tilt: number;
     zoom: number;
+    follow: boolean;
 }

@@ -1,18 +1,13 @@
-import { Slider } from '@mui/material';
-
-export type SettingsType = {
-    tilt: number;
-    speed: number;
-    zoom: number;
-}
+import { Slider, FormControlLabel, Checkbox } from '@mui/material';
+import { EmulatorOptionsInterface } from '@/features/route-emulator';
 
 type SettingsPropTypes = {
-    model: SettingsType;
-    onChange: (settings: SettingsType) => void;
+    model: EmulatorOptionsInterface;
+    onChange: (settings: EmulatorOptionsInterface) => void;
 }
 
 export function RouteEmulatorSettings({ model, onChange }: SettingsPropTypes) {
-    function handleChange(key: keyof SettingsType, value: number | number[]) {
+    function handleChange(key: keyof EmulatorOptionsInterface, value: unknown | number[]) {
         onChange({ ...model, [key]: value });
     }
 
@@ -54,6 +49,18 @@ export function RouteEmulatorSettings({ model, onChange }: SettingsPropTypes) {
                 max={30}
                 min={1}
                 onChange={(_, value) => handleChange('zoom', value)}
+            />
+        </div>
+        <div>
+            <FormControlLabel
+                label="Follow Current Position"
+                classes={{ label: 'text-gray-600 dark:text-gray-400' }}
+                control={
+                    <Checkbox
+                        checked={model.follow}
+                        onChange={(_, value) => handleChange('follow', value)}
+                    />
+                }
             />
         </div>
     </section>;

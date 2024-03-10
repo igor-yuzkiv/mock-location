@@ -6,6 +6,7 @@ export function useRouteEmulatorSettings() {
         speed: 3,
         tilt: 0,
         zoom: 19,
+        follow: true,
     });
 
     return {
