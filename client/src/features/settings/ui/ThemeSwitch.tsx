@@ -54,12 +54,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => {
 
 export function ThemeSwitch() {
     const dispatch = useAppDispatch();
-
-    function handleChange() {
-        dispatch(toggleTheme());
-    }
-
     return <div>
-        <MaterialUISwitch sx={{ m: 1 }} defaultChecked onChange={handleChange} />
+        <MaterialUISwitch sx={{ m: 1 }} defaultChecked onChange={() => dispatch(toggleTheme())} />
     </div>;
 }
