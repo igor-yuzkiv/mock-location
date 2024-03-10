@@ -1,6 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
-import { useAppDispatch } from '@/app/hooks';
+import { useAppDispatch } from '@/app/store/hooks.ts';
 import { toggleTheme } from '@/features/settings/settings.store';
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => {

@@ -1,6 +1,6 @@
 import HomePage from '@/pages/home/HomePage.tsx';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useAppSelector } from '@/app/hooks';
+import { useAppSelector } from '@/app/store/hooks.ts';
 import { DARK_THEME } from '@/app/theme.ts';
 
 export function DefaultLayout() {
