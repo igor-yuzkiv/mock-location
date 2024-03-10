@@ -1,6 +1,7 @@
 import { Button, Stack } from '@mui/material';
 import Pause from '@mui/icons-material/Pause';
 import PlayArrow from '@mui/icons-material/PlayArrow';
+import {ThemeSwitch} from "@/features/settings";
 
 type FlyoutActionsProps = {
     onClickBuild: () => void;
@@ -12,6 +13,7 @@ type FlyoutActionsProps = {
 export function FlyoutActions({ onClickBuild, onClickPlay, onClickReset, isPlaying }: FlyoutActionsProps) {
     return (
         <div className="flex items-center w-full justify-between">
+            <ThemeSwitch/>
             <Stack direction="row">
                 <Button size="small" onClick={onClickBuild}>
                     Build
