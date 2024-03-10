@@ -75,22 +75,20 @@ export function FlyoutWindow({ children, title, actions }: FlyoutProps) {
 
     return (
         <section
-            className={`${styles.window} ${isFullScreen && styles.windowFull}`}
+            className={`${styles.window} ${isFullScreen && styles.windowFullScreen}`}
             ref={containerRef}
         >
-            <div className={styles.container}>
-                <div
-                    className={styles.header}
-                    onMouseDown={onMouseDown}
-                    onMouseUp={onMouseUp}
-                    onDoubleClick={toggleFullScreen}
-                >
-                    {Boolean(title) && <h1 className="text-lg font-bold">{title}</h1>}
-                    {actions}
-                </div>
-
-                <div className={styles.content}>{children}</div>
+            <div
+                className={styles.windowHeader}
+                onMouseDown={onMouseDown}
+                onMouseUp={onMouseUp}
+                onDoubleClick={toggleFullScreen}
+            >
+                {Boolean(title) && <h1 className="text-lg font-bold">{title}</h1>}
+                {actions}
             </div>
+
+            <div className={styles.windowContent}>{children}</div>
         </section>
     );
 }

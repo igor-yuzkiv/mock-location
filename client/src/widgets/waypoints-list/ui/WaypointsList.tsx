@@ -1,6 +1,5 @@
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 import PlaceIcon from '@mui/icons-material/Place';
@@ -29,13 +28,16 @@ function WaypointListItem({ item, onClick, onDelete }: WaypointListItemPropTypes
                     <PlaceIcon />
                 </Avatar>
             </ListItemAvatar>
-            <ListItemText
-                className="truncate"
-                primary={item.address || 'Unknown address'}
-                secondary={LatLngUtil.toString(item.location)}
-            />
+            <div className="truncate">
+                <div className="dark:text-gray-200 truncate">
+                    {item.address || 'Unknown address'}
+                </div>
+                <div className="text-sm text-gray-500">
+                    {LatLngUtil.toString(item.location)}
+                </div>
+            </div>
             <ListItemSecondaryAction onClick={() => onDelete && onDelete(item)}>
-                <DeleteIcon></DeleteIcon>
+                <DeleteIcon className={'dark:text-gray-200'}/>
             </ListItemSecondaryAction>
         </ListItemButton>
     );
@@ -43,7 +45,7 @@ function WaypointListItem({ item, onClick, onDelete }: WaypointListItemPropTypes
 
 export function WaypointsList({ items, onClick, onDelete }: WaypointsListPropTypes) {
     return (
-        <List component="nav" dense>
+        <List dense>
             {items?.map((item) => (
                 <WaypointListItem key={item.id} item={item} onClick={onClick} onDelete={onDelete} />
             ))}
