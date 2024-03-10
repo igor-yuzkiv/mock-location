@@ -75,12 +75,12 @@ export function FlyoutWindow({ children, title, actions }: FlyoutProps) {
 
     return (
         <section
-            className={`${styles.flyoutWindow} ${isFullScreen && styles.flyoutWindowFull}`}
+            className={`${styles.window} ${isFullScreen && styles.windowFull}`}
             ref={containerRef}
         >
-            <div className="flex flex-col w-full h-full overflow-hidden relative">
+            <div className={styles.container}>
                 <div
-                    className="flex items-center justify-between w-full bg-gray-100 dark:bg-gray-800 py-1 px-2 cursor-grabbing"
+                    className={styles.header}
                     onMouseDown={onMouseDown}
                     onMouseUp={onMouseUp}
                     onDoubleClick={toggleFullScreen}
@@ -89,7 +89,7 @@ export function FlyoutWindow({ children, title, actions }: FlyoutProps) {
                     {actions}
                 </div>
 
-                <div className="flex flex-col w-full h-full overflow-y-auto bg-white dark:bg-gray-700">{children}</div>
+                <div className={styles.content}>{children}</div>
             </div>
         </section>
     );
