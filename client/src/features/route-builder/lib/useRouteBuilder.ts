@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { WaypointInterface } from '@/widgets/waypoints-list';
-import * as routeApi from '@/entities/route/api/routeApi.ts';
 import { RouteInterface } from '@/entities/route';
+import * as routeApi from '@/entities/route/api/routeApi.ts';
 import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { toast } from 'react-toastify';
 
-export function useRouteDirection() {
-    const [directionRoute, setDirectionRoute] = React.useState<RouteInterface | null>(null);
-    const [directionPolyline, setDirectionPolyline] = React.useState<google.maps.Polyline | null>(null);
+export function useRouteBuilder() {
+    const [route, setRoute] = React.useState<RouteInterface | null>(null);
+    const [routePolyline, setRoutePolyline] = React.useState<google.maps.Polyline | null>(null);
 
     async function buildRoute(waypoints: WaypointInterface[], mapObject: google.maps.Map | null): Promise<void> {
         if (waypoints.length < 2) return;
@@ -24,15 +24,16 @@ export function useRouteDirection() {
                 waypoints.map((waypoint) => waypoint.location),
             )
             .then(response => response.data)
-            .catch(() => {
-                toast.error('Failed to build route')
-            });
+            .catch(e => console.error(e));
 
-        if (!response) return;
+        if (!response) {
+            toast.error('Failed to build route')
+            return;
+        }
 
         const decodedPath = response.encoded_path.flatMap(i => GeoUtil.decodePolyline(i));
 
-        setDirectionRoute({
+        setRoute({
             ...response,
             decoded_path: decodedPath,
         });
@@ -41,8 +42,8 @@ export function useRouteDirection() {
     }
 
     function renderPolyline(path: google.maps.LatLngLiteral[], mapObject: google.maps.Map) {
-        if (directionPolyline) {
-            directionPolyline.setMap(null);
+        if (routePolyline) {
+            routePolyline.setMap(null);
         }
 
         const polyline = new google.maps.Polyline({
@@ -53,20 +54,20 @@ export function useRouteDirection() {
         });
 
         polyline.setMap(mapObject);
-        setDirectionPolyline(polyline);
+        setRoutePolyline(polyline);
     }
 
     function resetRoute() {
-        if (directionPolyline) {
-            directionPolyline.setMap(null);
-            setDirectionPolyline(null);
+        if (routePolyline) {
+            routePolyline.setMap(null);
+            setRoutePolyline(null);
         }
-        setDirectionRoute(null);
+        setRoute(null);
     }
 
     return {
         buildRoute,
-        directionRoute,
+        route,
         resetRoute,
     };
 }

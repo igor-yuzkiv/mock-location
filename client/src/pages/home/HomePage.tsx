@@ -1,6 +1,6 @@
 import React from 'react';
 import { useWaypointsList } from '@/widgets/waypoints-list/lib/useWaypointsList.ts';
-import { useRouteDirection } from '@/features/route-builder/lib/useRouteDirection.ts';
+import { useRouteBuilder } from '@/features/route-builder/lib/useRouteBuilder.ts';
 import { useRouteEmulator } from '@/features/route-emulator/lib/useRouteEmulator.ts';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { GOOGLE_MAP_API_KEY } from '@/shared/constants/GoogleMapConstants.ts';
@@ -16,11 +16,11 @@ import { useRouteEmulatorSettings } from '@/features/route-emulator/lib/useRoute
 
 
 export default function HomePage() {
-    const [tabIndex, setTabIndex] = React.useState(0);
-    const emulatorSettings = useRouteEmulatorSettings();
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
+    const [tabIndex, setTabIndex] = React.useState(0);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
-    const routeDirection = useRouteDirection();
+    const routeDirection = useRouteBuilder();
+    const emulatorSettings = useRouteEmulatorSettings();
     const routeEmulator = useRouteEmulator(mapObject, emulatorSettings.settings);
 
     function handleResetRoute() {
@@ -40,14 +40,14 @@ export default function HomePage() {
     }
 
     function onClickPlay() {
-        if (!routeDirection.directionRoute) return;
+        if (!routeDirection.route) return;
 
         if (routeEmulator.routePath.length) {
             routeEmulator.setIsPlaying(prev => !prev);
             return;
         }
 
-        routeEmulator.startRoute(routeDirection.directionRoute);
+        routeEmulator.startRoute(routeDirection.route);
     }
 
     return (
