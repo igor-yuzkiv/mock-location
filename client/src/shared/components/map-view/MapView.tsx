@@ -2,7 +2,9 @@ import React from 'react';
 import { DEFAULT_MAP_OPTIONS } from '@/shared/constants/GoogleMapConstants.ts';
 import { MapViewContext } from './MapViewContext.ts';
 
-async function initializeMap(mapElement: HTMLDivElement, options: google.maps.MapOptions) {
+import MapOptions = google.maps.MapOptions;
+
+async function initializeMap(mapElement: HTMLDivElement, options: Partial<MapOptions>) {
     return new google.maps.Map(mapElement, {
         ...DEFAULT_MAP_OPTIONS,
         ...options,
@@ -13,7 +15,7 @@ type MapViewPropsTypes = {
     children?: React.ReactNode;
     onMapReady?: (map: google.maps.Map) => void;
     onMapClick?: (event: google.maps.MapMouseEvent) => void;
-    mapOptions?: google.maps.MapOptions;
+    mapOptions?: Partial<MapOptions>;
 };
 
 export default function MapView({ children, mapOptions, onMapReady, onMapClick }: MapViewPropsTypes) {
