@@ -13,41 +13,40 @@ import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { Tab, Tabs } from '@mui/material';
 import { RouteEmulatorSettings } from '@/features/route-emulator';
 import { useRouteEmulatorSettings } from '@/features/route-emulator/lib/useRouteEmulatorSettings.ts';
-
+import { RouteDirectionPolyline } from '@/features/route-builder';
 
 export default function HomePage() {
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
     const [tabIndex, setTabIndex] = React.useState(0);
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
-    const routeDirection = useRouteBuilder();
     const emulatorSettings = useRouteEmulatorSettings();
+    const routeBuilder = useRouteBuilder();
     const routeEmulator = useRouteEmulator(mapObject, emulatorSettings.settings);
 
     function handleResetRoute() {
-        routeEmulator.resetRoute();
-        routeDirection.resetRoute();
+        routeEmulator.resetEmulator();
+        routeBuilder.setRoute(null);
     }
 
-    function onClickBuild() {
+    async function onClickBuild() {
         handleResetRoute();
-        routeDirection.buildRoute([...waypoints], mapObject)
-            .then(() => {
-                if (mapObject) {
-                    const bound = GeoUtil.coordinatesToBoundLiteral(waypoints.map((waypoint) => waypoint.location));
-                    mapObject.fitBounds(bound, 200);
-                }
-            });
+        await routeBuilder.buildRoute([...waypoints]);
+
+        if (mapObject) {
+            const bound = GeoUtil.coordinatesToBoundLiteral(waypoints.map((waypoint) => waypoint.location));
+            mapObject.fitBounds(bound, 200);
+        }
     }
 
     function onClickPlay() {
-        if (!routeDirection.route) return;
+        if (!routeBuilder.route) return;
 
         if (routeEmulator.routePath.length) {
             routeEmulator.setIsPlaying(prev => !prev);
             return;
         }
 
-        routeEmulator.startRoute(routeDirection.route);
+        routeEmulator.startRoute(routeBuilder.route);
     }
 
     return (
@@ -55,6 +54,7 @@ export default function HomePage() {
             <div className="flex flex-col w-full h-full">
                 <MapView onMapReady={(map) => setMapObject(map)}>
                     <DrawingManager onMarkerComplete={(marker) => marker && addWaypoint(marker)} />
+                    <RouteDirectionPolyline route={routeBuilder.route} />
                 </MapView>
 
                 <FlyoutWindow

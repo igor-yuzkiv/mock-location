@@ -87,7 +87,7 @@ export function useRouteEmulator(mapObject: google.maps.Map | null, options?: Em
         startRoute,
         isPlaying,
         setIsPlaying,
-        resetRoute,
+        resetEmulator: resetRoute,
         currentPosition,
     };
 }
