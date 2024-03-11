@@ -28,9 +28,7 @@ export function useRouteDirection() {
                 toast.error('Failed to build route')
             });
 
-        if (!response) {
-            return response;
-        }
+        if (!response) return;
 
         const decodedPath = response.encoded_path.flatMap(i => GeoUtil.decodePolyline(i));
 
