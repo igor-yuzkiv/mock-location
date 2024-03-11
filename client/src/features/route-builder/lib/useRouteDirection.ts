@@ -3,6 +3,7 @@ import { WaypointInterface } from '@/widgets/waypoints-list';
 import * as routeApi from '@/entities/route/api/routeApi.ts';
 import { RouteInterface } from '@/entities/route';
 import GeoUtil from '@/shared/lib/GeoUtil.ts';
+import { toast } from 'react-toastify';
 
 export function useRouteDirection() {
     const [directionRoute, setDirectionRoute] = React.useState<RouteInterface | null>(null);
@@ -23,7 +24,9 @@ export function useRouteDirection() {
                 waypoints.map((waypoint) => waypoint.location),
             )
             .then(response => response.data)
-            .catch(console.error);
+            .catch(() => {
+                toast.error('Failed to build route')
+            });
 
         if (!response) {
             return response;
