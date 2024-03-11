@@ -1,4 +1,4 @@
-import { Client, DirectionsResponse, LatLng, LatLngLiteral, TravelMode } from '@googlemaps/google-maps-services-js';
+import { Client, DirectionsResponse, LatLng, TravelMode } from '@googlemaps/google-maps-services-js';
 import { DirectionsRoute } from '@googlemaps/google-maps-services-js/src/common';
 import { RouteInterface } from '../route.model';
 
