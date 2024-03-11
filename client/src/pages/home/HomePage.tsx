@@ -40,16 +40,14 @@ export default function HomePage() {
     }
 
     function onClickPlay() {
-        if (!routeDirection.directionsResult) {
-            return;
-        }
+        if (!routeDirection.directionRoute) return;
 
         if (routeEmulator.routePath.length) {
             routeEmulator.setIsPlaying(prev => !prev);
             return;
         }
 
-        routeEmulator.startRoute(routeDirection.directionsResult.routes[0]);
+        routeEmulator.startRoute(routeDirection.directionRoute);
     }
 
     return (

@@ -1,54 +1,71 @@
 import * as React from 'react';
 import { WaypointInterface } from '@/widgets/waypoints-list';
-import { fetchDirections, renderDirection } from '@/shared/api/googleMaps.ts';
+import * as routeApi from '@/entities/route/api/routeApi.ts';
+import { RouteInterface } from '@/entities/route';
+import GeoUtil from '@/shared/lib/GeoUtil.ts';
 
 export function useRouteDirection() {
-    const [directionsResult, setDirectionsResult] = React.useState<google.maps.DirectionsResult | null>(null);
-    const [directionRenderer, setDirectionRenderer] = React.useState<google.maps.DirectionsRenderer | null>(null);
+    const [directionRoute, setDirectionRoute] = React.useState<RouteInterface | null>(null);
+    const [directionPolyline, setDirectionPolyline] = React.useState<google.maps.Polyline | null>(null);
 
     async function buildRoute(waypoints: WaypointInterface[], mapObject: google.maps.Map | null): Promise<void> {
+        if (waypoints.length < 2) return;
         resetRoute();
-        if (waypoints.length < 2) {
-            return;
-        }
 
         const origin = waypoints.shift();
         const destination = waypoints.pop();
-        if (!origin || !destination) {
-            return;
+        if (!origin || !destination) return;
+
+        const response = await routeApi
+            .buildRoute(
+                origin.location,
+                destination.location,
+                waypoints.map((waypoint) => waypoint.location),
+            )
+            .then(response => response.data)
+            .catch(console.error);
+
+        if (!response) {
+            return response;
         }
 
-        const response = await fetchDirections(
-            origin.location,
-            destination.location,
-            waypoints.map((waypoint) => {
-                return {
-                    location: waypoint.location,
-                    stopover: waypoint.stopover,
-                };
-            }),
-        );
+        const decodedPath = response.encoded_path.flatMap(i => GeoUtil.decodePolyline(i));
 
-        if (!response || !mapObject) {
-            return;
+        setDirectionRoute({
+            ...response,
+            decoded_path: decodedPath,
+        });
+
+        mapObject && renderPolyline(decodedPath, mapObject);
+    }
+
+    function renderPolyline(path: google.maps.LatLngLiteral[], mapObject: google.maps.Map) {
+        if (directionPolyline) {
+            directionPolyline.setMap(null);
         }
 
-        setDirectionsResult(response);
-        setDirectionRenderer(await renderDirection(response, mapObject));
+        const polyline = new google.maps.Polyline({
+            path: path,
+            strokeColor: '#0a66eb',
+            strokeOpacity: 0.8,
+            strokeWeight: 8,
+        });
+
+        polyline.setMap(mapObject);
+        setDirectionPolyline(polyline);
     }
 
     function resetRoute() {
-        if (directionRenderer) {
-            directionRenderer.setMap(null);
-            setDirectionRenderer(null);
+        if (directionPolyline) {
+            directionPolyline.setMap(null);
+            setDirectionPolyline(null);
         }
-
-        setDirectionsResult(null);
+        setDirectionRoute(null);
     }
 
     return {
         buildRoute,
-        directionsResult,
+        directionRoute,
         resetRoute,
     };
 }

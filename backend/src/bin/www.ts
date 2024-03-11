@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import * as bodyParser from 'body-parser';
 import routers from '../routes';
 
+
 dotenv.config();
 
 const app: Express = express();
@@ -16,6 +17,11 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Express + TypeScript Server');
 });
 
+// Middleware to log requests
+app.use((req, res, next) => {
+    console.log('[server]: ', req.method, req.url, res.statusCode);
+    next();
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

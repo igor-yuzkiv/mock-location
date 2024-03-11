@@ -4,6 +4,7 @@ import { getGreatCircleBearing } from 'geolib';
 import { EmulatorOptionsInterface, PositionInterface } from '@/features/route-emulator';
 import { DEFAULT_MAP_OPTIONS } from '@/shared/constants/GoogleMapConstants.ts';
 import { useCurrentPositionMarker } from '@/features/route-emulator/lib/useCurrentPositionMarker.ts';
+import { RouteInterface } from '@/entities/route';
 
 const UPDATE_LOCATION_INTERVAL = 1000;
 const INTERPOLATION_FRACTION = 3;
@@ -18,11 +19,7 @@ export function useRouteEmulator(mapObject: google.maps.Map | null, options?: Em
         return routePath[currentIndex] || null;
     }, [currentIndex, routePath]);
 
-    function startRoute(route: google.maps.DirectionsRoute) {
-        if (isPlaying) {
-            return;
-        }
-
+    function startRoute(route: RouteInterface) {
         prepareRoutePath(route);
         setIsPlaying(true);
     }
@@ -40,13 +37,12 @@ export function useRouteEmulator(mapObject: google.maps.Map | null, options?: Em
         }
     }
 
-    function prepareRoutePath(route: google.maps.DirectionsRoute) {
-        const coordinates = route.legs
-            .flatMap((leg) => leg.steps)
-            .flatMap((step) => step.path.map((latLng) => latLng.toJSON()))
-            .filter(Boolean);
+    function prepareRoutePath(route: RouteInterface) {
+        if (!route.decoded_path || !route.decoded_path.length) {
+            return;
+        }
 
-        const interpolated = GeoUtil.interpolatePolyline(coordinates, options?.speed || INTERPOLATION_FRACTION);
+        const interpolated = GeoUtil.interpolatePolyline(route.decoded_path, options?.speed || INTERPOLATION_FRACTION);
         const path = interpolated.map((latLng, index) => {
             const nextLatLng = interpolated[index + 1];
             const heading = nextLatLng ? getGreatCircleBearing(latLng, nextLatLng) : 0;

@@ -4,13 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "npx ts-node src/bin/www.ts",
+    "serve": "npx nodemon --exec ts-node src/bin/www.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@googlemaps/google-maps-services-js": "^3.3.42",
+    "@googlemaps/polyline-codec": "^1.0.28",
     "body-parser": "^1.20.2",
     "dotenv": "^16.4.5",
     "express": "^4.18.3"
