@@ -19,11 +19,11 @@ async function fetchRoute(origin: LatLng, destination: LatLng, waypoints: LatLng
         .directions({ params: requestParams })
         .then((response: DirectionsResponse) => response.data);
 
-    if (response?.routes?.length) {
-        return response.routes[0];
+    if (!response?.routes?.length) {
+        throw new Error('Failed to fetch route from Google Maps API. Status code: ' + response?.status || 'unknown');
     }
 
-    throw new Error('Failed to fetch route from Google Maps API. Status code: ' + response?.status || 'unknown');
+    return response.routes[0];
 }
 
 export default async function(origin: LatLng, destination: LatLng, waypoints: LatLng[]): Promise<RouteInterface> {
