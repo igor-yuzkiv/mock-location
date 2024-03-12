@@ -1,19 +1,17 @@
 import React from 'react';
-import { useWaypointsList } from '@/widgets/waypoints-list/lib/useWaypointsList.ts';
-import { useRouteBuilder } from '@/features/route-builder/lib/useRouteBuilder.ts';
-import { useRouteEmulator } from '@/features/route-emulator/lib/useRouteEmulator.ts';
 import { Wrapper } from '@googlemaps/react-wrapper';
 import { GOOGLE_MAP_API_KEY } from '@/shared/constants/GoogleMapConstants.ts';
-import MapView from '@/shared/components/map-view/MapView.tsx';
+import { MapView } from '@/shared/components/map-view/MapView.tsx';
 import { DrawingManager } from '@/shared/components/drawing-manager/DrawingManager.tsx';
 import { FlyoutWindow } from '@/shared/components/flyout-window/FlyoutWindow.tsx';
-import { WaypointsList } from '@/widgets/waypoints-list';
 import { FlyoutActions } from '@/pages/home/components/FlyoutActions.tsx';
+import { useWaypointsList, WaypointsList } from '@/widgets/waypoints-list';
+import { useRouteBuilder, RouteDirectionPolyline } from '@/features/route-builder';
+import { useRouteEmulator, useRouteEmulatorSettings, RouteEmulatorSettings } from '@/features/route-emulator';
+import { useDeviceBridgeManager, DevicesList } from '@/features/device-bridge';
 import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { Tab, Tabs } from '@mui/material';
-import { RouteEmulatorSettings } from '@/features/route-emulator';
-import { useRouteEmulatorSettings } from '@/features/route-emulator/lib/useRouteEmulatorSettings.ts';
-import { RouteDirectionPolyline } from '@/features/route-builder';
+
 
 export default function HomePage() {
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
@@ -22,6 +20,7 @@ export default function HomePage() {
     const emulatorSettings = useRouteEmulatorSettings();
     const routeBuilder = useRouteBuilder();
     const routeEmulator = useRouteEmulator(mapObject, emulatorSettings.settings);
+    const bridgeManager = useDeviceBridgeManager();
 
     function handleResetRoute() {
         routeEmulator.resetEmulator();
@@ -49,24 +48,6 @@ export default function HomePage() {
         routeEmulator.startRoute(routeBuilder.route);
     }
 
-    React.useEffect(() => {
-        const ws = new WebSocket("ws://192.168.88.17:3000?type=manager");
-
-        ws.onopen = () => {
-            console.log('WebSocket connected');
-            ws.send('Hello');
-        };
-
-        ws.onmessage = (e) => {
-            console.log('WebSocket message:', e.data);
-        };
-
-
-        return () => {
-            ws.close();
-        }
-    }, [])
-
     return (
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
@@ -88,6 +69,7 @@ export default function HomePage() {
                     <Tabs value={tabIndex}>
                         <Tab label="Waypoints" onClick={() => setTabIndex(0)} />
                         <Tab label="Settings" onClick={() => setTabIndex(1)} />
+                        <Tab label="Devices" onClick={() => setTabIndex(2)} />
                     </Tabs>
 
                     {tabIndex === 0 && (<WaypointsList items={waypoints} onDelete={removeWaypoint} />)}
@@ -97,6 +79,10 @@ export default function HomePage() {
                             model={emulatorSettings.settings}
                             onChange={emulatorSettings.setSettings}
                         />
+                    </div>)}
+
+                    {tabIndex === 2 && (<div className="flex flex-col overflow-y-auto overflow-x-hidden p-1">
+                        <DevicesList devices={bridgeManager.devices} />
                     </div>)}
                 </FlyoutWindow>
             </div>

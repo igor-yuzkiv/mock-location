@@ -37,7 +37,7 @@ function WaypointListItem({ item, onClick, onDelete }: WaypointListItemPropTypes
                 </div>
             </div>
             <ListItemSecondaryAction onClick={() => onDelete && onDelete(item)}>
-                <DeleteIcon className={'dark:text-gray-200'}/>
+                <DeleteIcon className={'dark:text-gray-200'} />
             </ListItemSecondaryAction>
         </ListItemButton>
     );

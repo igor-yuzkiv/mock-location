@@ -18,7 +18,7 @@ type MapViewPropsTypes = {
     mapOptions?: Partial<MapOptions>;
 };
 
-export default function MapView({ children, mapOptions, onMapReady, onMapClick }: MapViewPropsTypes) {
+export function MapView({ children, mapOptions, onMapReady, onMapClick }: MapViewPropsTypes) {
     const mapElementRef = React.useRef<HTMLDivElement | null>(null);
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
 
