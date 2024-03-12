@@ -49,6 +49,24 @@ export default function HomePage() {
         routeEmulator.startRoute(routeBuilder.route);
     }
 
+    React.useEffect(() => {
+        const ws = new WebSocket("ws://192.168.88.17:3000?type=manager");
+
+        ws.onopen = () => {
+            console.log('WebSocket connected');
+            ws.send('Hello');
+        };
+
+        ws.onmessage = (e) => {
+            console.log('WebSocket message:', e.data);
+        };
+
+
+        return () => {
+            ws.close();
+        }
+    }, [])
+
     return (
         <Wrapper apiKey={GOOGLE_MAP_API_KEY}>
             <div className="flex flex-col w-full h-full">
