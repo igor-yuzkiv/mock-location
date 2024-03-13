@@ -69,7 +69,7 @@ export default function HomePage() {
                     <Tabs value={tabIndex}>
                         <Tab label="Waypoints" onClick={() => setTabIndex(0)} />
                         <Tab label="Settings" onClick={() => setTabIndex(1)} />
-                        <Tab label="Devices" onClick={() => setTabIndex(2)} />
+                        <Tab label={`Devices ${bridgeManager.devices.length ? '🟢' : '🔴'}`} onClick={() => setTabIndex(2)} />
                     </Tabs>
 
                     {tabIndex === 0 && (<WaypointsList items={waypoints} onDelete={removeWaypoint} />)}
