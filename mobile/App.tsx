@@ -1,6 +1,11 @@
 import React from 'react';
-import { Button, SafeAreaView } from 'react-native';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import MapView, { Marker, LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
+import { HOME_COORDINATE, useMapRegion } from './src/shared/hooks/useMapRegion';
+
 function App() {
+    const mapRegion = useMapRegion();
+    const [position, setPosition] = React.useState<LatLng>(HOME_COORDINATE);
 
     function test() {
         console.log('connecting...');
@@ -24,9 +29,23 @@ function App() {
 
     return (
         <SafeAreaView>
-            <Button title={'Click me'} onPress={test} />
+            <MapView
+                style={styles.mapContainer}
+                provider={PROVIDER_GOOGLE}
+                region={mapRegion.region}
+            >
+                <Marker coordinate={position} />
+            </MapView>
         </SafeAreaView>
     );
 }
+
+const styles = StyleSheet.create({
+    mapContainer: {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+    },
+});
 
 export default App;

@@ -57,13 +57,17 @@ export function useRouteEmulator(mapObject: Nullable<google.maps.Map>, options?:
             if (!isPlaying || !mapObject) return;
 
             const position = routePath[index];
-            if (position && !position.expired && options?.follow) {
+            if (!position || position.expired) {
+                return;
+            }
+
+            onPositionChange && onPositionChange(position);
+
+            if (options?.follow) {
                 mapObject?.panTo(position.latLng);
                 mapObject?.setZoom(options ? options.zoom : MAP_ZOOM);
                 mapObject?.setTilt(options ? options.tilt : MAP_TILT);
                 mapObject?.setHeading(position.heading);
-
-                onPositionChange && onPositionChange(position);
             }
         },
         [isPlaying, routePath, mapObject, options, onPositionChange],
