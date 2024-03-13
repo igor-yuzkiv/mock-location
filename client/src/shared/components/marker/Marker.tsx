@@ -8,7 +8,7 @@ type MarkerProps = {
 
 export function Marker({ position, onDragEnd }: MarkerProps) {
     const { mapObject } = React.useContext(MapViewContext);
-    const [markerObject, setMarkerObject] = React.useState<google.maps.marker.AdvancedMarkerElement | null>(null);
+    const [markerObject, setMarkerObject] = React.useState<Nullable<google.maps.marker.AdvancedMarkerElement>>(null);
 
     React.useEffect(() => {
         if (mapObject && !markerObject) {

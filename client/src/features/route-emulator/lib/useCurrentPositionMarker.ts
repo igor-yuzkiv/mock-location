@@ -18,7 +18,7 @@ async function initMarker(position: PositionInterface, mapObject: google.maps.Ma
     });
 }
 
-export function useCurrentPositionMarker(postion: PositionInterface | null, mapObject: google.maps.Map | null) {
+export function useCurrentPositionMarker(postion: Nullable<PositionInterface>, mapObject: google.maps.Map | null) {
     const [markerObject, setMarkerObject] = useState<AdvancedMarkerElement>();
 
     useEffect(() => {

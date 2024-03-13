@@ -8,7 +8,7 @@ type FlyoutProps = {
 };
 
 export function FlyoutWindow({ children, title, actions }: FlyoutProps) {
-    const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const containerRef = React.useRef<Nullable<HTMLDivElement>>(null);
     const [dragState, setDragState] = React.useState({
         isDragging: false,
         x: 0,

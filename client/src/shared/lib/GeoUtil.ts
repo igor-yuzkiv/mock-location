@@ -11,7 +11,7 @@ export default {
         return `${latLng.lat.toFixed(6)},${latLng.lng.toFixed(6)}`;
     },
 
-    toCoordinate(value: unknown): google.maps.LatLngLiteral | null {
+    toCoordinate(value: unknown): Nullable<google.maps.LatLngLiteral> {
         if (!value) {
             return null;
         }

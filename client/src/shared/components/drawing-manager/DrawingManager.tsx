@@ -7,7 +7,7 @@ type DrawingManagerPropType = {
 
 export function DrawingManager({ onMarkerComplete }: DrawingManagerPropType) {
     const { mapObject } = React.useContext(MapViewContext);
-    const [drawingManager, setDrawingManager] = React.useState<google.maps.drawing.DrawingManager | null>(null);
+    const [drawingManager, setDrawingManager] = React.useState<Nullable<google.maps.drawing.DrawingManager>>(null);
 
     React.useEffect(() => {
         (async () => {

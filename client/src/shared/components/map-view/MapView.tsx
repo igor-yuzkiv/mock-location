@@ -19,7 +19,7 @@ type MapViewPropsTypes = {
 };
 
 export function MapView({ children, mapOptions, onMapReady, onMapClick }: MapViewPropsTypes) {
-    const mapElementRef = React.useRef<HTMLDivElement | null>(null);
+    const mapElementRef = React.useRef<Nullable<HTMLDivElement>>(null);
     const [mapObject, setMapObject] = React.useState<google.maps.Map | null>(null);
 
     React.useEffect(() => {

@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 type MapViewContextType = {
-    mapObject: google.maps.Map | null;
+    mapObject: Nullable<google.maps.Map>;
 };
 
 export const MapViewContext = createContext<MapViewContextType>({ mapObject: null });

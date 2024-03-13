@@ -6,7 +6,7 @@ import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { toast } from 'react-toastify';
 
 export function useRouteBuilder() {
-    const [route, setRoute] = React.useState<RouteInterface | null>(null);
+    const [route, setRoute] = React.useState<Nullable<RouteInterface>>(null);
 
     async function buildRoute(waypoints: WaypointInterface[]): Promise<void> {
         if (waypoints.length < 2) return;
