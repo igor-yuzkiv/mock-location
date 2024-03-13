@@ -5,7 +5,7 @@ import { DeviceInterface, IncomingMessageInterface, MessageTypeEnum } from '@/fe
 type MessageHandlerType = (message: IncomingMessageInterface) => void;
 
 export function useDeviceBridgeManager(onMessage?: MessageHandlerType) {
-    const { lastJsonMessage } = useWebSocket(import.meta.env.VITE_WS_URL as string);
+    const { lastJsonMessage, sendJsonMessage } = useWebSocket(import.meta.env.VITE_WS_URL as string);
     const [devices, setDevices] = React.useState<DeviceInterface[]>([]);
 
     const handlersRef = React.useRef<{ [key: string]: MessageHandlerType }>({});
@@ -31,5 +31,9 @@ export function useDeviceBridgeManager(onMessage?: MessageHandlerType) {
         onMessage && onMessage(lastJsonMessage);
     }, [lastJsonMessage, onMessage]);
 
-    return { devices };
+    function sendMessage(type: string, payload: object) {
+        sendJsonMessage({ type, payload });
+    }
+
+    return { devices, sendMessage };
 }

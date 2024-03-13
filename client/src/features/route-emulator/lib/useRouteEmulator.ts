@@ -11,7 +11,7 @@ const INTERPOLATION_FRACTION = 3;
 const MAP_ZOOM = 30;
 const MAP_TILT = 90;
 
-export function useRouteEmulator(mapObject: Nullable<google.maps.Map>, options?: EmulatorOptionsInterface) {
+export function useRouteEmulator(mapObject: Nullable<google.maps.Map>, options?: EmulatorOptionsInterface, onPositionChange?: (position: PositionInterface) => void) {
     const [routePath, setRoutePath] = React.useState<PositionInterface[]>([]);
     const [isPlaying, setIsPlaying] = React.useState<boolean>(false);
     const [currentIndex, setCurrentIndex] = React.useState<number>(0);
@@ -62,9 +62,11 @@ export function useRouteEmulator(mapObject: Nullable<google.maps.Map>, options?:
                 mapObject?.setZoom(options ? options.zoom : MAP_ZOOM);
                 mapObject?.setTilt(options ? options.tilt : MAP_TILT);
                 mapObject?.setHeading(position.heading);
+
+                onPositionChange && onPositionChange(position);
             }
         },
-        [isPlaying, routePath, mapObject, options],
+        [isPlaying, routePath, mapObject, options, onPositionChange],
     );
 
     React.useEffect(() => {

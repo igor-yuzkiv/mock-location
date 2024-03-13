@@ -7,7 +7,12 @@ import { FlyoutWindow } from '@/shared/components/flyout-window/FlyoutWindow.tsx
 import { FlyoutActions } from '@/pages/home/components/FlyoutActions.tsx';
 import { useWaypointsList, WaypointsList } from '@/widgets/waypoints-list';
 import { useRouteBuilder, RouteDirectionPolyline } from '@/features/route-builder';
-import { useRouteEmulator, useRouteEmulatorSettings, RouteEmulatorSettings } from '@/features/route-emulator';
+import {
+    useRouteEmulator,
+    useRouteEmulatorSettings,
+    RouteEmulatorSettings,
+    PositionInterface,
+} from '@/features/route-emulator';
 import { useDeviceBridgeManager, DevicesList } from '@/features/device-bridge';
 import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { Tab, Tabs } from '@mui/material';
@@ -19,7 +24,7 @@ export default function HomePage() {
     const { waypoints, addWaypoint, removeWaypoint } = useWaypointsList();
     const emulatorSettings = useRouteEmulatorSettings();
     const routeBuilder = useRouteBuilder();
-    const routeEmulator = useRouteEmulator(mapObject, emulatorSettings.settings);
+    const routeEmulator = useRouteEmulator(mapObject, emulatorSettings.settings, onPositionChange);
     const bridgeManager = useDeviceBridgeManager();
 
     function handleResetRoute() {
@@ -46,6 +51,10 @@ export default function HomePage() {
         }
 
         routeEmulator.startRoute(routeBuilder.route);
+    }
+
+    function onPositionChange(position: PositionInterface) {
+        bridgeManager.sendMessage('position', position);
     }
 
     return (

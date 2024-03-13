@@ -9,6 +9,11 @@ interface ClientInterface {
     type: ClientTypeEnum;
 }
 
+interface MessageInterface {
+    type: string;
+    payload: unknown;
+}
+
 export class BridgeController {
     wss: WebSocket.Server;
     manager: ClientInterface | null = null;
@@ -22,17 +27,14 @@ export class BridgeController {
         const client = this.initClient(ws, req);
         if (!client) return;
 
-        console.log(`[bridge] Client connected: ${client?.id} (${client?.type})`);
-
-        ws.on("close", () => this.onClose(client));
-        ws.on("message", (message) => this.onMessage(client, message));
-        ws.on("error", (error) => console.error(`[bridge] Error: ${error}`));
+        ws.on('close', () => this.onClose(client));
+        ws.on('message', (message) => this.onMessage(client, message));
+        ws.on('error', (error) => console.error(`[bridge] Error: ${error}`));
 
         this.sendDevicesToManager();
     }
 
-    onClose(client:ClientInterface) {
-        console.log(`Client disconnected: ${client.id} (${client.type})`);
+    onClose(client: ClientInterface) {
         if (client.type === ClientTypeEnum.MANAGER) {
             this.manager = null;
         } else {
@@ -41,8 +43,29 @@ export class BridgeController {
         this.sendDevicesToManager();
     }
 
-    onMessage(client:ClientInterface, message: WebSocket.RawData) {
-        console.log(`[bridge] Message from ${client.id} (${client.type}): ${message}`);
+    onMessage(client: ClientInterface, rawMessage: WebSocket.RawData) {
+        const message = JSON.parse(rawMessage.toString());
+        if (!this.isValidMessage(message)) {
+            return;
+        }
+
+        this.sendMessageToDevices(message);
+    }
+
+    sendMessageToDevices(message: MessageInterface, deviceIds: string[] = []) {
+        for (const device of this.devices.values()) {
+            if (deviceIds.length && !deviceIds.includes(device.id)) continue;
+            device.ws.send(JSON.stringify(message));
+        }
+    }
+
+    isValidMessage(message: unknown): message is MessageInterface {
+        return (
+            typeof message === 'object' &&
+            message !== null &&
+            'type' in message &&
+            'payload' in message
+        );
     }
 
     initClient(ws: WebSocket, req: IncomingMessage): ClientInterface | undefined {
