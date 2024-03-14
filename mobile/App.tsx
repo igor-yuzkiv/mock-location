@@ -6,11 +6,10 @@ import { useDeviceBridge } from './src/hooks/useDeviceBridge';
 import GeoUtil from './src/uitls/GeoUtil';
 
 const { MockLocationModule } = NativeModules;
-const WS_URL = 'ws://192.168.88.17:3000/?type=executor';
 
 function App() {
     const mapRegion = useMapRegion();
-    const deviceBridge = useDeviceBridge(WS_URL);
+    const deviceBridge = useDeviceBridge();
 
     React.useEffect(() => {
         deviceBridge.addSubscription('position', (payload: unknown) => {

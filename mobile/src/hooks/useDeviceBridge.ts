@@ -1,4 +1,5 @@
 import React from 'react';
+import Config from 'react-native-config';
 
 type SubscriptionHandlerType = (payload: unknown) => void;
 type SubscriptionType = [string, SubscriptionHandlerType][];
@@ -12,7 +13,7 @@ function isValidaMessage(message: unknown): boolean {
     );
 }
 
-export function useDeviceBridge(url: string) {
+export function useDeviceBridge() {
     const [subscriptions, setSubscriptions] = React.useState<SubscriptionType>([]);
     const messageHandlerRef = React.useRef<(event: WebSocketMessageEvent) => void>();
 
@@ -34,17 +35,12 @@ export function useDeviceBridge(url: string) {
         });
     }
 
-    function removeSubscription(type: string, handler: SubscriptionHandlerType) {
-        setSubscriptions((prev) => {
-            return prev.filter(i => i[0] !== type && i[1] !== handler);
-        });
-    }
-
     React.useEffect(() => {
-        if (!url) {
+        if (!Config.WEB_SOCKET_URL) {
             return;
         }
-        const ws = new WebSocket(url);
+
+        const ws = new WebSocket(Config.WEB_SOCKET_URL);
 
         ws.onopen = () => {
             console.log('[ws] connected');
@@ -59,10 +55,9 @@ export function useDeviceBridge(url: string) {
         return () => {
             ws?.close();
         };
-    }, [url]);
+    }, []);
 
     return {
         addSubscription,
-        removeSubscription,
     };
 }
