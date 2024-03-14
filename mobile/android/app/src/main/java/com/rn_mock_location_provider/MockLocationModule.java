@@ -36,11 +36,6 @@ public class MockLocationModule extends ReactContextBaseJavaModule {
         return "MockLocationModule";
     }
 
-    public void getCurrentLocationProvider(Promise promise) {
-        LocationManager locationManager = (LocationManager) getReactApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        promise.resolve(locationManager.getProviders(true).toString());
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.S)
     @ReactMethod
     public void setMockLocation(ReadableMap data, Promise promise) {
@@ -78,9 +73,7 @@ public class MockLocationModule extends ReactContextBaseJavaModule {
 
             locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, newLocation);
 
-            promise.resolve(data.hasKey("test"));
-
-//            promise.resolve(locationManager.getCurrentLocation());
+            promise.resolve(true);
         } catch (Exception e) {
             promise.reject("Create Event Error", e);
         }
