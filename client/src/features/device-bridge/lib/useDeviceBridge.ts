@@ -4,7 +4,7 @@ import { DeviceInterface, IncomingMessageInterface, MessageTypeEnum } from '@/fe
 
 type MessageHandlerType = (message: IncomingMessageInterface) => void;
 
-export function useDeviceBridgeManager(onMessage?: MessageHandlerType) {
+export function useDeviceBridge(onMessage?: MessageHandlerType) {
     const { lastJsonMessage, sendJsonMessage } = useWebSocket(import.meta.env.VITE_WS_URL as string);
     const [devices, setDevices] = React.useState<DeviceInterface[]>([]);
 

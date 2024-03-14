@@ -13,7 +13,7 @@ import {
     RouteEmulatorSettings,
     PositionInterface,
 } from '@/features/route-emulator';
-import { useDeviceBridgeManager, DevicesList } from '@/features/device-bridge';
+import { useDeviceBridge, DevicesList } from '@/features/device-bridge';
 import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { Tab, Tabs } from '@mui/material';
 
@@ -25,7 +25,7 @@ export default function HomePage() {
     const emulatorSettings = useRouteEmulatorSettings();
     const routeBuilder = useRouteBuilder();
     const routeEmulator = useRouteEmulator(mapObject, emulatorSettings.settings, onPositionChange);
-    const bridgeManager = useDeviceBridgeManager();
+    const deviceBridge = useDeviceBridge();
 
     function handleResetRoute() {
         routeEmulator.resetEmulator();
@@ -54,7 +54,7 @@ export default function HomePage() {
     }
 
     function onPositionChange(position: PositionInterface) {
-        bridgeManager.sendMessage('position', position);
+        deviceBridge.sendMessage('position', position);
     }
 
     return (
@@ -78,7 +78,7 @@ export default function HomePage() {
                     <Tabs value={tabIndex}>
                         <Tab label="Waypoints" onClick={() => setTabIndex(0)} />
                         <Tab label="Settings" onClick={() => setTabIndex(1)} />
-                        <Tab label={`Devices ${bridgeManager.devices.length ? '🟢' : '🔴'}`} onClick={() => setTabIndex(2)} />
+                        <Tab label={`Devices ${deviceBridge.devices.length ? '🟢' : '🔴'}`} onClick={() => setTabIndex(2)} />
                     </Tabs>
 
                     {tabIndex === 0 && (<WaypointsList items={waypoints} onDelete={removeWaypoint} />)}
@@ -91,7 +91,7 @@ export default function HomePage() {
                     </div>)}
 
                     {tabIndex === 2 && (<div className="flex flex-col overflow-y-auto overflow-x-hidden p-1">
-                        <DevicesList devices={bridgeManager.devices} />
+                        <DevicesList devices={deviceBridge.devices} />
                     </div>)}
                 </FlyoutWindow>
             </div>

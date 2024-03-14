@@ -1,5 +1,5 @@
 export { DevicesList } from './ui/DevicesList.tsx';
-export { useDeviceBridgeManager } from './lib/useDeviceBridgeManager.ts';
+export { useDeviceBridge } from './lib/useDeviceBridge.ts';
 
 export enum MessageTypeEnum {
     devices = 'devices',
