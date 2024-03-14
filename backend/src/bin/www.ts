@@ -4,8 +4,9 @@ import * as bodyParser from 'body-parser';
 import routers from '../routes';
 
 dotenv.config();
-
+const PORT = process.env.PORT || 3000;
 const app: Express = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(routers);
@@ -14,18 +15,7 @@ app.get('/', (req: Request, res: Response) => {
     res.send('Express + TypeScript Server');
 });
 
-// Middleware to log requests
-app.use((req, res, next) => {
-    console.log('[server]: ', req.method, req.url, res.statusCode);
-    next();
-});
-
-const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`[server]: Server is running at http://localhost:${PORT}`);
+    console.log(`[www]: Server is running at http://localhost:${PORT}`);
 });
-
-
-// Import the WebSocket server
-import "./ws";
 

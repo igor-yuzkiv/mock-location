@@ -1,6 +1,6 @@
 import React from 'react';
 import { NativeModules, SafeAreaView, StyleSheet } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { LatLng, PROVIDER_GOOGLE } from 'react-native-maps';
 import { useMapRegion } from './src/hooks/useMapRegion';
 import { useDeviceBridge } from './src/hooks/useDeviceBridge';
 import GeoUtil from './src/uitls/GeoUtil';
@@ -8,8 +8,16 @@ import GeoUtil from './src/uitls/GeoUtil';
 const { MockLocationModule } = NativeModules;
 
 function App() {
+    const mapRef = React.useRef<MapView>(null);
     const mapRegion = useMapRegion();
     const deviceBridge = useDeviceBridge();
+
+    function animateCamera(coordinate: LatLng) {
+        mapRef.current?.animateCamera({
+            center: coordinate,
+            zoom: 20,
+        });
+    }
 
     React.useEffect(() => {
         deviceBridge.addSubscription('position', (payload: unknown) => {
@@ -17,13 +25,19 @@ function App() {
                 return;
             }
             const coordinate = GeoUtil.toCoordinate(payload.latLng);
+            if (!coordinate) {
+                return;
+            }
+
             MockLocationModule.setMockLocation(coordinate);
+            animateCamera(coordinate);
         });
     }, []);
 
     return (
         <SafeAreaView>
             <MapView
+                ref={mapRef}
                 style={styles.mapContainer}
                 provider={PROVIDER_GOOGLE}
                 region={mapRegion.region}

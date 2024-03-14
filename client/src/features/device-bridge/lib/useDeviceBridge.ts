@@ -12,7 +12,6 @@ export function useDeviceBridge(onMessage?: MessageHandlerType) {
     handlersRef.current = {
         [MessageTypeEnum.devices]: (message: IncomingMessageInterface) => {
             if (message.payload && Array.isArray(message.payload)) {
-                console.log('devices', message.payload);
                 setDevices(message.payload as DeviceInterface[]);
             }
         },
