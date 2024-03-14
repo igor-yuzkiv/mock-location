@@ -12,7 +12,7 @@ function isValidaMessage(message: unknown): boolean {
     );
 }
 
-export function useWebSocket(url: string) {
+export function useDeviceBridge(url: string) {
     const [subscriptions, setSubscriptions] = React.useState<SubscriptionType>([]);
     const messageHandlerRef = React.useRef<(event: WebSocketMessageEvent) => void>();
 

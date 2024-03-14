@@ -13,7 +13,7 @@ import {
     RouteEmulatorSettings,
     PositionInterface,
 } from '@/features/route-emulator';
-import { useDeviceBridge, DevicesList } from '@/features/device-bridge';
+import { useDeviceBridge, DevicesList, MessageTypeEnum } from '@/features/device-bridge';
 import GeoUtil from '@/shared/lib/GeoUtil.ts';
 import { Tab, Tabs } from '@mui/material';
 
@@ -54,7 +54,7 @@ export default function HomePage() {
     }
 
     function onPositionChange(position: PositionInterface) {
-        deviceBridge.sendMessage('position', position);
+        deviceBridge.sendMessage(MessageTypeEnum.position, position);
     }
 
     return (
@@ -78,7 +78,8 @@ export default function HomePage() {
                     <Tabs value={tabIndex}>
                         <Tab label="Waypoints" onClick={() => setTabIndex(0)} />
                         <Tab label="Settings" onClick={() => setTabIndex(1)} />
-                        <Tab label={`Devices ${deviceBridge.devices.length ? '🟢' : '🔴'}`} onClick={() => setTabIndex(2)} />
+                        <Tab label={`Devices ${deviceBridge.devices.length ? '🟢' : '🔴'}`}
+                             onClick={() => setTabIndex(2)} />
                     </Tabs>
 
                     {tabIndex === 0 && (<WaypointsList items={waypoints} onDelete={removeWaypoint} />)}

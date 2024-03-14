@@ -1,19 +1,19 @@
 import React from 'react';
 import { NativeModules, SafeAreaView, StyleSheet } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import { useMapRegion } from './src/shared/hooks/useMapRegion';
-import { useWebSocket } from './src/shared/hooks/useWebSocket';
-import GeoUtil from './src/shared/uitls/GeoUtil';
+import { useMapRegion } from './src/hooks/useMapRegion';
+import { useDeviceBridge } from './src/hooks/useDeviceBridge';
+import GeoUtil from './src/uitls/GeoUtil';
 
 const { MockLocationModule } = NativeModules;
 const WS_URL = 'ws://192.168.88.17:3000/?type=executor';
 
 function App() {
     const mapRegion = useMapRegion();
-    const ws = useWebSocket(WS_URL);
+    const deviceBridge = useDeviceBridge(WS_URL);
 
     React.useEffect(() => {
-        ws.addSubscription('position', (payload: unknown) => {
+        deviceBridge.addSubscription('position', (payload: unknown) => {
             if (!payload || typeof payload !== 'object' || !('latLng' in payload)) {
                 return;
             }
@@ -29,9 +29,7 @@ function App() {
                 provider={PROVIDER_GOOGLE}
                 region={mapRegion.region}
                 showsUserLocation={true}
-            >
-
-            </MapView>
+            />
         </SafeAreaView>
     );
 }

@@ -3,17 +3,13 @@ export { useDeviceBridge } from './lib/useDeviceBridge.ts';
 
 export enum MessageTypeEnum {
     devices = 'devices',
+    position = 'position'
 }
 
 export interface IncomingMessageInterface {
     type: string,
     payload: unknown,
 }
-
-export interface OutgoingMessageInterface extends IncomingMessageInterface {
-    device_id: string;
-}
-
 
 export interface DeviceInterface {
     id: string;

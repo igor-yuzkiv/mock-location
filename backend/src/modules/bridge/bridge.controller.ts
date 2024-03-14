@@ -1,7 +1,6 @@
 import WebSocket from 'ws';
 import { IncomingMessage } from 'node:http';
 import { v4 as uuidv4 } from 'uuid';
-import ClientTypeEnum from './ClientTypeEnum';
 
 interface ClientInterface {
     id: string;
@@ -12,6 +11,15 @@ interface ClientInterface {
 interface MessageInterface {
     type: string;
     payload: unknown;
+}
+
+enum ClientTypeEnum {
+    MANAGER = 'manager',
+    EXECUTOR = 'executor',
+}
+
+enum MessageTypeEnum {
+    devices = 'devices'
 }
 
 export class BridgeController {
@@ -32,40 +40,6 @@ export class BridgeController {
         ws.on('error', (error) => console.error(`[bridge] Error: ${error}`));
 
         this.sendDevicesToManager();
-    }
-
-    onClose(client: ClientInterface) {
-        if (client.type === ClientTypeEnum.MANAGER) {
-            this.manager = null;
-        } else {
-            this.devices.delete(client.id);
-        }
-        this.sendDevicesToManager();
-    }
-
-    onMessage(client: ClientInterface, rawMessage: WebSocket.RawData) {
-        const message = JSON.parse(rawMessage.toString());
-        if (!this.isValidMessage(message)) {
-            return;
-        }
-
-        this.sendMessageToDevices(message);
-    }
-
-    sendMessageToDevices(message: MessageInterface, deviceIds: string[] = []) {
-        for (const device of this.devices.values()) {
-            if (deviceIds.length && !deviceIds.includes(device.id)) continue;
-            device.ws.send(JSON.stringify(message));
-        }
-    }
-
-    isValidMessage(message: unknown): message is MessageInterface {
-        return (
-            typeof message === 'object' &&
-            message !== null &&
-            'type' in message &&
-            'payload' in message
-        );
     }
 
     initClient(ws: WebSocket, req: IncomingMessage): ClientInterface | undefined {
@@ -92,8 +66,26 @@ export class BridgeController {
         return client;
     }
 
-    isValidClientType(type: string | undefined): type is ClientTypeEnum {
-        return Boolean(typeof type === 'string' && type.toUpperCase() in ClientTypeEnum);
+    onClose(client: ClientInterface) {
+        if (client.type === ClientTypeEnum.MANAGER) {
+            this.manager = null;
+        } else {
+            this.devices.delete(client.id);
+        }
+        this.sendDevicesToManager();
+    }
+
+    onMessage(client: ClientInterface, rawMessage: WebSocket.RawData) {
+        const message = JSON.parse(rawMessage.toString());
+        if (!this.isValidMessage(message)) {
+            return;
+        }
+
+        this.sendMessageToDevices(message);
+    }
+
+    sendMessageToDevices(message: MessageInterface) {
+        this.devices.forEach(device => device.ws.send(JSON.stringify(message)));
     }
 
     sendDevicesToManager() {
@@ -105,8 +97,21 @@ export class BridgeController {
         }));
 
         this.manager.ws.send(JSON.stringify({
-            type: 'devices',
+            type: MessageTypeEnum.devices,
             payload: devices,
         }));
+    }
+
+    isValidMessage(message: unknown): message is MessageInterface {
+        return (
+            typeof message === 'object' &&
+            message !== null &&
+            'type' in message &&
+            'payload' in message
+        );
+    }
+
+    isValidClientType(type: string | undefined): type is ClientTypeEnum {
+        return Boolean(typeof type === 'string' && type.toUpperCase() in ClientTypeEnum);
     }
 }
